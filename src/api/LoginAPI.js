@@ -1,10 +1,10 @@
 import api from './config';
 
-const LoginAPI = (response) => {
-    api.post('/login', { response })
-    .then((response) => {
-        localStorage.setItem('token', response.data.token)
-    })
+const LoginAPI = async (response) => {
+    const res = await api.post('/login', { response });
+ 
+    localStorage.setItem('token', res.data.token);
+    return res.data.userData;
 };
 
 export default LoginAPI
