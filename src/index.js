@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { createLogger } from "redux-logger";
 
 import reducer from "../src/reducers/index";
-import App from "./App";
+import Routes from './route/Routes';
 import * as serviceWorker from './serviceWorker';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -23,7 +23,7 @@ const store = createStore(
 
 render(
   <Provider store={store}>
-    <App />
+    <Routes />
   </Provider>,
   document.getElementById("root")
 );
