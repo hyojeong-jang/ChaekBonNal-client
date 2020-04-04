@@ -11,17 +11,22 @@ import { receiveUserData } from '../action/index';
 const Login = () => {
     const history = useHistory();
     const dispatch = useDispatch();
-    // const authorizedUser = useSelector(state => state.authorization);
 
     const responseGoogle = async (response) => {
-        let res = await LoginAPI(response);
-        await history.push('/');
-        await dispatch(receiveUserData(res));
+        const res = await LoginAPI(response);
+        const hasChoosenCategory = await res.choosen_category.length;
+
+        if (hasChoosenCategory) {
+            history.push('/');
+        } else {
+            history.push(`/choose-category/?user=${res.name}`);
+        }
+        dispatch(receiveUserData(res));
     };
 
-    const loginFailed = async () => {
+    const loginFailed = () => {
+        history.push('/login');
         alert('로그인에 실패했습니다. 다시 시도해주세요.');
-        await history.push('/login');
     };
     
     return (
@@ -37,8 +42,5 @@ const Login = () => {
         </>
     );
 };
-
-// [] 로그인 완료 시 메인페이지로 라우팅
-// [o] 스토어에 정보 디스패치
 
 export default Login
