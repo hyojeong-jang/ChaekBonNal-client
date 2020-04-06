@@ -15,3 +15,8 @@ export const selectedBook = (book, category) => ({
     book,
     category
 })
+
+export const byUserPreference = (bookReports) => ({
+    type: types.BY_USER_PREFERENCE,
+    bookReports
+})

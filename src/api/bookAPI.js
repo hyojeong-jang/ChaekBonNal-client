@@ -8,7 +8,7 @@ export const saveBookReport = async ({
     title,
     quote
 }) => {
-    api.post(`users/${userName}/book-report`, {
+    const result = await api.post(`/users/${userName}/book-report`, {
         data: {
             selectedBook,
             selectedCategory,
@@ -16,5 +16,16 @@ export const saveBookReport = async ({
             title,
             quote
         }
-    })    
+    })  
+    return result.data;
+}
+
+export const receiveMemberBookReport = async (userToken) => {
+    const bookReports = await api.get(`/users/${userToken}/book-reports`);
+    return bookReports.data.bookReports;
+}
+
+export const receiveNonMemberBookReport = async () => {
+    const bookReports = await api.get(`/non-member/book-reports`);
+    return bookReports.data.bookReports;
 }

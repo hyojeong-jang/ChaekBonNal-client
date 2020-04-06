@@ -8,6 +8,10 @@ import { receiveSearchResult } from '../action/index'
 const Writing = () => {
     const history = useHistory();
     const dispatch = useDispatch();
+
+    const isMember = localStorage.token;
+    if (!isMember) history.push('/login');
+    
     let word = '';
     let text = '';
     let title = '';
@@ -37,6 +41,7 @@ const Writing = () => {
             title,
             quote
         })
+        history.push('/');
     });
 
     return (
