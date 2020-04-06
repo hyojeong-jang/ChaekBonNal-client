@@ -7,5 +7,6 @@ export const bookSearchAPI = async (userName, word) => {
 
 export const isbnAPI = async (userName, isbn) => {
     const isbnInfo = await api.get(`users/${userName}/writing/isbn-search/${isbn}`);
-    console.log(isbnInfo);
+    console.log(isbnInfo)
+    return isbnInfo.data.result;
 }

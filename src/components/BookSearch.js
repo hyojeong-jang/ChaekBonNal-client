@@ -8,7 +8,7 @@ const BookSearch = () => {
     const getIsbn = useCallback(async (el) => {
         const isbn = el.isbn;
         const result = await isbnAPI(userName, isbn);
-        console.log(result);
+        
     })
     return (
         <div>
