@@ -1,0 +1,17 @@
+.wrapper {
+	display : -webkit-flex;
+	display : flex;
+}
+.main {
+	-webkit-flex : 1;
+	flex : 1;
+}
+.side {
+	width : 300px;
+}
+.login {
+    top: 60%;
+}
+.p {
+    top: 40%;
+}

@@ -8,7 +8,7 @@ const ChooseCategory = () => {
     const history = useHistory();
     const query = useQuery();
 
-    function useQuery() {
+    const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
       

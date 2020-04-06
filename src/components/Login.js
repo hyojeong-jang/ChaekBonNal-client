@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import { GoogleLogin } from 'react-google-login';
-import LoginAPI from '../api/LoginAPI';
+import loginAPI from '../api/loginAPI';
 
 import { receiveUserData } from '../action/index';
+import './Login.css';
 
 
 const Login = () => {
@@ -13,7 +14,7 @@ const Login = () => {
     const dispatch = useDispatch();
 
     const responseGoogle = async (response) => {
-        const res = await LoginAPI(response);
+        const res = await loginAPI(response);
         const hasChoosenCategory = await res.choosen_category.length;
 
         if (hasChoosenCategory) {
@@ -30,16 +31,24 @@ const Login = () => {
     };
     
     return (
-        <>
-            <Link to='/'>
-                <h1>책본날</h1>
-            </Link>
-            <GoogleLogin
-                clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                onSuccess={responseGoogle}
-                onFailure={loginFailed}
-            />
-        </>
+        <div className='wrapper'>
+            <div className='main'>
+                <Link to='/'>
+                    <img src='/images/ChaekBonNalLogo.png' className='logo' />
+                </Link>
+                <div className='p'>
+                    오늘은 책을 보았다.
+                </div>
+                <GoogleLogin
+                    className='login'
+                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                    onSuccess={responseGoogle}
+                    onFailure={loginFailed}
+                />
+            </div>
+            <div className='side'>
+            </div>
+        </div>
     );
 };
 

@@ -5,3 +5,7 @@ export const receiveUserData = (userData) => ({
     userData
 });
 
+export const receiveSearchResult = (searchData) => ({
+    type: types.RECEIVE_SEARCH_DATA,
+    searchData
+})
