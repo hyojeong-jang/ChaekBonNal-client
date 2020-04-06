@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
 import { GoogleLogin } from 'react-google-login';
-import loginAPI from '../api/loginAPI';
+import loginAPI from '../api/LoginAPI';
 
 import { receiveUserData } from '../action/index';
 import './Login.css';

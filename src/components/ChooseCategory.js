@@ -6,11 +6,10 @@ const ChooseCategory = () => {
     const category = ['총류', '철학', '종교', '사회과학', '자연과학', '기술과학', '예술', '언어', '문학', '역사'];
     const choosenCategory = [];
     const history = useHistory();
-    const query = useQuery();
-
     const useQuery = () => {
         return new URLSearchParams(useLocation().search);
     }
+    const query = useQuery();
       
     const onSubmit = useCallback(async () => {
         const userName = query.get('user');
