@@ -1,9 +1,9 @@
 import React, { useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { saveBookReport } from '../api/bookAPI'
 import { bookSearchAPI } from '../api/bookSearchAPI';
-import { receiveSearchResult } from '../action/index'
+import { receiveSearchResult, temporaryStorage } from '../action/index'
 
 const Writing = () => {
     const history = useHistory();
@@ -11,13 +11,16 @@ const Writing = () => {
 
     const isMember = localStorage.token;
     if (!isMember) history.push('/login');
-    
+
     let word = '';
     let text = '';
     let title = '';
     let quote = ''
 
     const userName = useSelector(state => state.user.name);
+    const savedText = useSelector(state => state.bookReports.text);
+    const savedTitle = useSelector(state => state.bookReports.title);
+    const imageUrl = useSelector(state => state.bookReports.imageUrl);
     const selectedBook = useSelector(state => state.book.selected);
     const selectedCategory = useSelector(state => state.book.category);
 
@@ -32,18 +35,23 @@ const Writing = () => {
         history.push(`/writing/book-search`);
     }, []);
 
+    const onClickAddImageButton = useCallback(() => {
+        dispatch(temporaryStorage(text, title));
+    })
+
     const onClickDoneButton = useCallback(async () => {
         await saveBookReport({
             userName,
             selectedBook,
             selectedCategory,
+            imageUrl,
             text,
             title,
             quote
         })
         history.push('/');
     });
-
+    
     return (
         <>
             <input type='search' name='bookSearch' onChange={getSearchWord} />
@@ -57,8 +65,12 @@ const Writing = () => {
                 </div>
                 : []
             }
-            <input className='title' type='text' onChange={getTitle} />
-            <textarea className='text' rows='10' cols='50' onChange={getText}/>
+            <img src={imageUrl} />
+            <Link to='/writing/attaching-image'>
+                <button onClick={onClickAddImageButton}>책 사진 넣기</button>
+            </Link>
+            <input className='title' type='text' value={savedTitle} onChange={getTitle} />
+            <textarea className='text' rows='10' cols='50' value={savedText} onChange={getText}/>
             <input className='quote' type='text' onChange={getQuote} />
             <button onClick={onClickDoneButton}>Done</button>
         </>

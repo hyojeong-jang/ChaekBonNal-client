@@ -1,6 +1,6 @@
 import React, { useEffect, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { receiveMemberBookReport, receiveNonMemberBookReport } from '../api/bookAPI';
 import { byUserPreference } from '../action/index'
@@ -13,7 +13,6 @@ import './App.css';
 const App = () => {
     const userToken = localStorage.token;
     const dispatch = useDispatch();
-    const history = useHistory();
     const bookReports = useSelector(state => state.bookReports.list);
     let bookReport = null;
 
@@ -42,11 +41,15 @@ const App = () => {
                 <Link to='/login'>
                     <button className='startBtn'>시작하기</button>
                 </Link>
-                <GoogleLogout
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    buttonText="Logout"
-                    onLogoutSuccess={onLogoutButtonClick}
-                />
+                {
+                    localStorage.token
+                    ? <GoogleLogout
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        buttonText="Logout"
+                        onLogoutSuccess={onLogoutButtonClick}
+                    />
+                    : []
+                }
             </div>
             <Link to='/writing'>
                 <button>글 쓰기</button>

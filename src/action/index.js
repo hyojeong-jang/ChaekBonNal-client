@@ -20,3 +20,15 @@ export const byUserPreference = (bookReports) => ({
     type: types.BY_USER_PREFERENCE,
     bookReports
 })
+
+export const receiveImageData = (url, quote) => ({
+   type: types.RECEIVE_IMAGE_DATA,
+   url,
+   quote
+});
+
+export const temporaryStorage = (text, title) => ({
+    type: types.TEMPORARY_STORAGE,
+    text,
+    title
+})

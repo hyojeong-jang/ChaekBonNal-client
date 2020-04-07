@@ -1,16 +1,33 @@
-import { BY_USER_PREFERENCE } from '../constants/index';
+import * as actions from '../constants/index';
 
 export const initialState = {
     previous: [],
-    list: []
+    list: [],
+    imageUrl: '',
+    quote: '',
+    title: '',
+    text: ''
 };
 
 export const bookReports = (state = initialState, action) => {
     switch (action.type) {
-        case BY_USER_PREFERENCE:
+        case actions.BY_USER_PREFERENCE:
             return {
+                ...state,
                 list: action.bookReports
             };
+        case actions.RECEIVE_IMAGE_DATA:
+            return {
+                ...state,
+                imageUrl: action.url,
+                quote: action.quote
+            }
+        case actions.TEMPORARY_STORAGE:
+            return {
+                ...state,
+                title: action.title,
+                text: action.text
+            }
         default:
             return state;
     }
