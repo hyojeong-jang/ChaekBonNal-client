@@ -31,22 +31,24 @@ const Login = () => {
     };
     
     return (
-        <div className='wrapper'>
-            <div className='main'>
-                <Link to='/'>
-                    <img src='/images/ChaekBonNalLogo.png' className='logo' />
-                </Link>
-                <div className='p'>
-                    오늘은 책을 보았다.
+        <div className='background'>
+            <div className='wrapper'>
+                <div className='main'>
+                    <Link to='/'>
+                        <img src='/images/Logo.png' className='logo' />
+                    </Link>
+                    <div className='p'>
+                        오늘은 책을 보았다.
+                    </div>
+                    <GoogleLogin
+                        className='login'
+                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                        onSuccess={responseGoogle}
+                        onFailure={loginFailed}
+                    />
                 </div>
-                <GoogleLogin
-                    className='login'
-                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                    onSuccess={responseGoogle}
-                    onFailure={loginFailed}
-                />
-            </div>
-            <div className='side'>
+                <div className='side'>
+                </div>
             </div>
         </div>
     );

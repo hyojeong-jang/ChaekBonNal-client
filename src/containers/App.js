@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 
 import { receiveMemberBookReport, receiveNonMemberBookReport } from '../api/bookAPI';
 import { byUserPreference } from '../action/index'
-import BookReport from '../components/BookReport';
+
 import { GoogleLogout } from 'react-google-login';
+import FlipPage from 'react-flip-page';
 
 import './App.css';
 
@@ -20,11 +21,10 @@ const App = () => {
         const receiveData = async () => {
             if (userToken) {
                 bookReport = await receiveMemberBookReport(userToken);
-                dispatch(byUserPreference(bookReport));
             } else {
                 bookReport = await receiveNonMemberBookReport();
-                dispatch(byUserPreference(bookReport));
             }
+            dispatch(byUserPreference(bookReport));
         };
         receiveData();
     }, [])
@@ -37,33 +37,62 @@ const App = () => {
     return (
         <>
             <div className='header'>
-                <img src='/images/ChaekBonNalLogo.png' className='logo' />
-                <Link to='/login'>
-                    <button className='startBtn'>시작하기</button>
-                </Link>
+                <img src='/images/Logo.png' className='logo' />
                 {
                     localStorage.token
                     ? <GoogleLogout
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                        buttonText="Logout"
+                        buttonText='Logout'
+                        className='logout'
                         onLogoutSuccess={onLogoutButtonClick}
                     />
                     : []
                 }
             </div>
+            <Link to='/login'>
+                <img src='/images/login.png' className='start' />
+            </Link>
             <Link to='/writing'>
-                <button>글 쓰기</button>
+                <img src='/images/writing.png' className='btn writing' />
             </Link>
             <Link to='/library'>
-                <button>내 방</button>
+                <img src='/images/mypage.png' className='btn mypage' />
             </Link>
-            <div>
-                {
-                    bookReports
-                    ? <BookReport data={bookReports} />
-                    : []
-                }
-            </div>
+            {
+                bookReports
+                ? (
+                    <div className='app'>
+                        <FlipPage
+                            className='book'
+                            showSwipeHint
+                            uncutPages
+                            orientation='horizontal'
+                            width='1200'
+                            height='800'
+                            pageBackground='#ffffff'
+                            animationDuration='400'
+                            style={{top: '20%'}}
+                        >
+                        {
+                            bookReports.map(page => (
+                                <article
+                                    className='article'
+                                    onClick={bookReportInModal(page)}
+                                >
+                                    <div>{page.book_info.title}</div>
+                                    <img src={page.image_url} />
+                                    <div>{page.book_info.author}</div>
+                                    <div>{page.book_info.category}</div>
+                                    <div>{page.title}</div>
+                                    <div>{page.text}</div>
+                                </article>
+                            ))
+                        }
+                        </FlipPage>
+                    </div>
+                )
+                : []
+            }
         </>
     );
 }

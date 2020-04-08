@@ -1,6 +1,10 @@
 .wrapper {
-	display : -webkit-flex;
-	display : flex;
+	position: relative;
+	left: 1100px;
+	width: 600px;
+	height: 1000px;
+	background-color: #f2f2f2;
+	box-shadow: 8px 8px 16px #777777;
 }
 .main {
 	-webkit-flex : 1;
@@ -10,8 +14,19 @@
 	width : 300px;
 }
 .login {
-    top: 60%;
+    position: absolute;
+    top: 34%;
+    left: 15%;
 }
 .p {
-    top: 40%;
+	position: absolute;
+    top: 20%;
+    left: 10%;
 }
+
+.background {
+	background-image : url('/images/background.jpeg');
+	background-repeat : no-repeat;
+	background-size : 1100px 1000px;
+}
+
