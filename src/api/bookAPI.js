@@ -32,11 +32,39 @@ export const receiveNonMemberBookReport = async () => {
     return response.data.bookReports;
 }
 
-export const saveBookImage = async (url, userToken) => {
+export const saveBookImage = async (userToken, url) => {
     const response = await api.post(`/users/${userToken}/writing/attaching-image`, {
         data: {
             url
         }
     });
+
     return response.data.imageUrl;
 }
+
+// export const saveBookImage = async (userToken, imageFile) => {
+//     const data = new FormData();
+//     data.append('image', imageFile);
+
+    // const config = {
+    //     method: 'POST',
+    //     body: data,
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data',
+    //       'Access-Control-Allow-Origin': '*'
+    //     },
+    // };
+
+    // const response = await fetch(`http://localhost:4000/users/${userToken}/writing/attaching-image`,
+    //     config
+    // );
+
+    // api.post(`/users/${userToken}/writing/attaching-image`,
+    //     data, { headers: {
+    //         'Content-Type': 'multipart/form-data'
+    //     }
+    // })
+    // .then((res) => {
+    //     console.log(res)
+    // })
+// }

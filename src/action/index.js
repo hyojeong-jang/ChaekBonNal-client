@@ -27,8 +27,13 @@ export const receiveImageData = (url, quote) => ({
    quote
 });
 
-export const temporaryStorage = (text, title) => ({
-    type: types.TEMPORARY_STORAGE,
+export const drafts = (text, title) => ({
+    type: types.DRAFTS,
     text,
     title
+})
+
+export const receiveDetectedText = (detectedText) => ({
+    type: types.RECEIVE_DETECTED_TEXT,
+    detectedText
 })

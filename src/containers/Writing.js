@@ -1,33 +1,30 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { saveBookReport } from '../api/bookAPI'
 import { bookSearchAPI } from '../api/bookSearchAPI';
-import { receiveSearchResult, temporaryStorage } from '../action/index'
+import { receiveSearchResult, drafts } from '../action/index'
 
 const Writing = () => {
     const history = useHistory();
     const dispatch = useDispatch();
 
     const isMember = localStorage.token;
-    if (!isMember) history.push('/login');
+    if (!isMember) {
+        history.push('/login');
+    }
 
+    const draftsTitle = useSelector(state => state.bookReports.title);
+    const draftsText = useSelector(state => state.bookReports.text);
+    const [ text, setText ] = useState(draftsText);
+    const [ title, setTitle ] = useState(draftsTitle);
     let word = '';
-    let text = '';
-    let title = '';
-    let quote = ''
 
     const userName = useSelector(state => state.user.name);
-    const savedText = useSelector(state => state.bookReports.text);
-    const savedTitle = useSelector(state => state.bookReports.title);
     const imageUrl = useSelector(state => state.bookReports.imageUrl);
+    const quote = useSelector(state => state.bookReports.quote);
     const selectedBook = useSelector(state => state.book.selected);
     const selectedCategory = useSelector(state => state.book.category);
-
-    const getSearchWord = useCallback((e) => word = e.target.value);
-    const getText = useCallback((e) => text = e.target.value);
-    const getTitle = useCallback((e) => title = e.target.value);
-    const getQuote = useCallback((e) => quote = e.target.value);
 
     const onClickSearchButton = useCallback(async () => {
         const searchResult = await bookSearchAPI(userName, word);
@@ -36,7 +33,7 @@ const Writing = () => {
     }, []);
 
     const onClickAddImageButton = useCallback(() => {
-        dispatch(temporaryStorage(text, title));
+        dispatch(drafts(text, title));
     })
 
     const onClickDoneButton = useCallback(async () => {
@@ -54,8 +51,13 @@ const Writing = () => {
     
     return (
         <>
-            <input type='search' name='bookSearch' onChange={getSearchWord} />
-            <button onClick={onClickSearchButton}>Search</button>
+            <input type='search'
+                name='bookSearch'
+                onChange={(e) => word = e.target.value}
+            />
+            <button
+                onClick={onClickSearchButton}
+            >Search</button>
             {
                 selectedBook
                 ? <div>
@@ -67,12 +69,31 @@ const Writing = () => {
             }
             <img src={imageUrl} />
             <Link to='/writing/attaching-image'>
-                <button onClick={onClickAddImageButton}>책 사진 넣기</button>
+                <button
+                    onClick={onClickAddImageButton}
+                >책 사진 넣기</button>
             </Link>
-            <input className='title' type='text' value={savedTitle} onChange={getTitle} />
-            <textarea className='text' rows='10' cols='50' value={savedText} onChange={getText}/>
-            <input className='quote' type='text' onChange={getQuote} />
-            <button onClick={onClickDoneButton}>Done</button>
+            <input 
+                className='title'
+                type='text'
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+            />
+            <textarea
+                className='text'
+                rows='10'
+                cols='50'
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+            />
+            <input
+                className='quote'
+                type='text'
+                value={quote}
+            />
+            <button
+                onClick={onClickDoneButton}
+            >Done</button>
         </>
     );
 };

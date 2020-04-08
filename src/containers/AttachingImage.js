@@ -1,66 +1,58 @@
-import React from 'react';
-import { connect } from 'react-redux';
+import React, { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { receiveImageData } from '../action/index'
 import { saveBookImage } from '../api/bookAPI';
-import textDetectionAPI from '../api/textDetectionAPI';
 
-class AttachingImage extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onChangeImageFile = (e) => {
-            const reader = new FileReader();
-            reader.readAsDataURL(e.target.files[0]);
-     
-            reader.onload = () => {
-                return this.setState({ imageSrc: reader.result });
-            }
-        };
-        this.onClickAddButton = async () => {
-            console.log(this.state.imageSrc)
-            const userToken = localStorage.token;
-            const url = await saveBookImage(this.state.imageSrc, userToken);
-            const quote = this.state.detectedText;
-    
-            await this.props.dispatchImageData(url, quote);
-            this.props.history.push("/writing");
+
+const AttachingImage = () => {
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const [ imageSrc, setImageSrc ] = useState('');
+
+    const onChangeImageFile = useCallback((e) => {
+        const reader = new FileReader();
+
+        reader.readAsDataURL(e.target.files[0]);
+        reader.onload = () => {
+            setImageSrc(reader.result);
+            dispatch(receiveImageData(reader.result, null));
         }
-        this.startTextDetection = async () => {
-            const detectedText = await textDetectionAPI(this.state.imageSrc);
-            this.setState({ detectedText });
-        }
-    }
+    });
 
-    state = { imageSrc: '', detectedText: '' };
+    const onClickAddButton = useCallback(async () => {
+        const userToken = localStorage.token;
+        const url = imageSrc.split(',')[1];
+  
+        await saveBookImage(userToken, url);
+        dispatch(receiveImageData(url, null));
+        history.push('/writing');
+    });
 
-    hasGetUserMedia () {
+    const startTextDetection = useCallback(async () => {
+        history.push(`/writing/attaching-image/text-detection`);
+    });
+
+    const hasGetUserMedia = () => {
         return !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
             navigator.mozGetUserMedia || navigator.msGetUserMedia
         );
     }
 
-    render() {
-        const { imageSrc } = this.state;
-
-      return (
+    return (
         <>
             {
                 imageSrc
                 ? <img src={imageSrc} />
                 : []
             }
-            <input type='file' onChange={this.onChangeImageFile} accept='image/*;capture=camera' /> 
-            <button onClick={this.startTextDetection}>인용구 추출</button>
-            <button onClick={this.onClickAddButton}>첨부하기</button>
+            <input type='file' onChange={onChangeImageFile} accept='image/*;capture=camera' /> 
+            <button onClick={startTextDetection}>인용구 추출</button>
+            <button onClick={onClickAddButton}>첨부하기</button>
         </>
-      )
-    }
+    );
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        dispatchImageData: (url, quote) => dispatch(receiveImageData(url, quote)),
-    }
-}
-
-export default connect(null, mapDispatchToProps)(AttachingImage)
+export default AttachingImage

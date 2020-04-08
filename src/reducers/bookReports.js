@@ -22,11 +22,16 @@ export const bookReports = (state = initialState, action) => {
                 imageUrl: action.url,
                 quote: action.quote
             }
-        case actions.TEMPORARY_STORAGE:
+        case actions.DRAFTS:
             return {
                 ...state,
                 title: action.title,
                 text: action.text
+            }
+        case actions.RECEIVE_DETECTED_TEXT:
+            return {
+                ...state,
+                quote: action.detectedText
             }
         default:
             return state;
