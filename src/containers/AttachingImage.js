@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import Resizer from 'react-image-file-resizer';
 
-import { receiveImageData } from '../action/index'
+import { receiveImageData, draftsImage } from '../action/index';
 import { saveBookImage } from '../api/bookAPI';
 
 const AttachingImage = () => {
@@ -13,9 +13,12 @@ const AttachingImage = () => {
     const [ imageSrc, setImageSrc ] = useState('');
     const [ imageFile, setImageFile ] = useState(null);
 
+    const userToken = localStorage.token;
+    let resultUrl = '';
+
     const onChangeImageFile = useCallback((e) => {
         setImageFile(e.target.files[0]);
-
+        
         Resizer.imageFileResizer(
             e.target.files[0],
             300,
@@ -25,21 +28,24 @@ const AttachingImage = () => {
             0,
             uri => {
                 setImageSrc(uri);
-                dispatch(receiveImageData(uri, null));
+                dispatch(draftsImage(uri));
             },
             'base64'
         );
     });
 
     const onClickAddButton = useCallback(async () => {
-        const userToken = localStorage.token;
-        const resultUrl = await saveBookImage(userToken, imageFile);
-
-        dispatch(receiveImageData(resultUrl, null));
+        if (!resultUrl) {
+            resultUrl = await saveBookImage(userToken, imageFile);
+        } 
+        setImageSrc(resultUrl);
+        dispatch(receiveImageData(resultUrl));
         history.push('/writing');
     });
 
     const startTextDetection = useCallback(async () => {
+        resultUrl = await saveBookImage(userToken, imageFile);
+        dispatch(receiveImageData(resultUrl));
         history.push(`/writing/attaching-image/text-detection`);
     });
 

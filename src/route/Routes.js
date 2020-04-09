@@ -10,6 +10,7 @@ import Library from '../components/Library';
 import Bookmarks from '../components/Bookmarks';
 import AttachingImage from '../containers/AttachingImage';
 import TextDetection from '../containers/TextDetection';
+import CommentsModal from '../containers/CommentsModal';
 
 const Routes = () => {
     return (
@@ -24,6 +25,7 @@ const Routes = () => {
                 <Route exact path='/bookmarks' component={Bookmarks} />
                 <Route exact path='/writing/attaching-image' component={AttachingImage} />
                 <Route exact path='/writing/attaching-image/text-detection' component={TextDetection} />
+                <Route exact path='/comments' component={CommentsModal} />
             </Switch>
         </Router>
     );

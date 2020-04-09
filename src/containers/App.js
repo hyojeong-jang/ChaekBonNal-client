@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
@@ -8,6 +8,8 @@ import { byUserPreference } from '../action/index'
 import { GoogleLogout } from 'react-google-login';
 import FlipPage from 'react-flip-page';
 
+import CommentsModal from './CommentsModal';
+import ModalPortal from '../ModalPortal';
 import './App.css';
 
 
@@ -16,6 +18,9 @@ const App = () => {
     const dispatch = useDispatch();
     const bookReports = useSelector(state => state.bookReports.list);
     let bookReport = null;
+
+    const [ bookReportId, setBookReportId ] = useState('');
+    const [ isModalOpened, setIsModalOpened ] = useState(false);
 
     useEffect(() => {
         const receiveData = async () => {
@@ -33,10 +38,6 @@ const App = () => {
         localStorage.removeItem('token');
         window.location.reload();
     });
-
-    const bookReportInModal = useCallback((page) => {
-        console.log(page)
-    })
 
     return (
         <>
@@ -81,7 +82,10 @@ const App = () => {
                                 <article
                                     key={index}
                                     className='article'
-                                    onClick={bookReportInModal(page)}
+                                    onClick={() => {
+                                        setIsModalOpened(true);
+                                        setBookReportId(page._id);
+                                    }}
                                 >
                                     <div>{page.book_info.title}</div>
                                     <img src={page.image_url} />
@@ -94,8 +98,17 @@ const App = () => {
                             ))
                         }
                         </FlipPage>
-                    </div>
+                    </div> 
                 )
+            }
+            {
+                isModalOpened
+                && <ModalPortal>
+                    <CommentsModal
+                        setModal={setIsModalOpened}
+                        bookReportId={bookReportId}
+                    />
+                </ModalPortal>
             }
         </>
     );

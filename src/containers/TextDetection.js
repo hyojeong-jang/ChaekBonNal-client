@@ -13,7 +13,7 @@ const TextDetection = () => {
     const dispatch = useDispatch();
     const history = useHistory();
 
-    const imageSrc = useSelector(state => state.bookReports.image);
+    const dataUrl = useSelector(state => state.bookReports.dataUrl);
 
     const [ text, setText ] = useState('');
     const [ crop, setCrop ] = useState({
@@ -25,7 +25,7 @@ const TextDetection = () => {
     );
 
     const onClickDetectionButton = useCallback(async () => {
-        const detectedText = await textDetectionAPI(imageSrc);
+        const detectedText = await textDetectionAPI(dataUrl);
         setText(detectedText);
     })
 
@@ -49,13 +49,12 @@ const TextDetection = () => {
     return (
         <>
             <ReactCrop
-                src={imageSrc}
+                src={dataUrl}
                 crop={crop}
                 onImageLoaded={onImageLoaded}
                 onComplete={onCropComplete}
                 onChange={onCropChange}
             />
-            {/* <img src={imageSrc} /> */}
             <button onClick={onClickDetectionButton}>텍스트 감지하기</button>
             <textarea value={text} onChange={(e) => setText(e.target.value)} />
             <button onClick={onClickDoneButton}>인용문으로 사용</button>
