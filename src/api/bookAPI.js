@@ -51,3 +51,9 @@ export const findOndBookReport = async (id) => {
     const response = await api.get(`/book-reports/${id}`);
     return response.data.bookReport;
 };
+
+export const saveBookmark = async (userToken, reportId, isBookmarked) => {
+    const response = await api.put(`/book-reports/${reportId}/users/${userToken}/bookmark`, { isBookmarked });
+
+    return response.data.isBookmarked;
+};

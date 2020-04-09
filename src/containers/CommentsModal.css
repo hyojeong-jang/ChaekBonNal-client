@@ -10,9 +10,17 @@
     justify-content: center;
 }
 
-.outerContainer .innerContainer {
+.innerReport, .comments {
     background: white;
     padding: 1rem;
-    width: 1000px;
+}
+
+.innerReport {
+    width: 500px;
+    height: 700px;
+}
+
+.comments {
+    width: 500px;
     height: 700px;
 }
