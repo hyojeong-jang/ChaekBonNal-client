@@ -3,7 +3,6 @@ import FlipPage from 'react-flip-page';
 
 
 const BookReport = (bookReports) => {
-    console.log(bookReports)
     return (
         <div className='app'>
             <FlipPage

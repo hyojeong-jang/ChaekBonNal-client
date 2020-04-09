@@ -34,19 +34,22 @@ const App = () => {
         window.location.reload();
     });
 
+    const bookReportInModal = useCallback((page) => {
+        console.log(page)
+    })
+
     return (
         <>
             <div className='header'>
                 <img src='/images/Logo.png' className='logo' />
                 {
                     localStorage.token
-                    ? <GoogleLogout
+                    && <GoogleLogout
                         clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
                         buttonText='Logout'
                         className='logout'
                         onLogoutSuccess={onLogoutButtonClick}
                     />
-                    : []
                 }
             </div>
             <Link to='/login'>
@@ -60,7 +63,7 @@ const App = () => {
             </Link>
             {
                 bookReports
-                ? (
+                && (
                     <div className='app'>
                         <FlipPage
                             className='book'
@@ -74,8 +77,9 @@ const App = () => {
                             style={{top: '20%'}}
                         >
                         {
-                            bookReports.map(page => (
+                            bookReports.map((page, index) => (
                                 <article
+                                    key={index}
                                     className='article'
                                     onClick={bookReportInModal(page)}
                                 >
@@ -85,13 +89,13 @@ const App = () => {
                                     <div>{page.book_info.category}</div>
                                     <div>{page.title}</div>
                                     <div>{page.text}</div>
+                                    <div>{page.quote}</div>
                                 </article>
                             ))
                         }
                         </FlipPage>
                     </div>
                 )
-                : []
             }
         </>
     );

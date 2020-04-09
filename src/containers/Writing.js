@@ -21,7 +21,7 @@ const Writing = () => {
     let word = '';
 
     const userName = useSelector(state => state.user.name);
-    const imageUrl = useSelector(state => state.bookReports.imageUrl);
+    const imageUrl = useSelector(state => state.bookReports.image);
     const quote = useSelector(state => state.bookReports.quote);
     const selectedBook = useSelector(state => state.book.selected);
     const selectedCategory = useSelector(state => state.book.category);

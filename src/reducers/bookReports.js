@@ -3,7 +3,7 @@ import * as actions from '../constants/index';
 export const initialState = {
     previous: [],
     list: [],
-    imageUrl: '',
+    image: '',
     quote: '',
     title: '',
     text: ''
@@ -19,7 +19,7 @@ export const bookReports = (state = initialState, action) => {
         case actions.RECEIVE_IMAGE_DATA:
             return {
                 ...state,
-                imageUrl: action.url,
+                image: action.url,
                 quote: action.quote
             }
         case actions.DRAFTS:
