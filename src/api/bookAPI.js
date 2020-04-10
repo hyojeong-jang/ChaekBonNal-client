@@ -76,4 +76,4 @@ export const deleteComment = async (userToken, reportId, commentId) => {
     })
 
     return response.data.comments
-}
+};
