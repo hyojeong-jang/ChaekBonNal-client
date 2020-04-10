@@ -49,7 +49,7 @@ export const saveBookImage = async (userToken, file) => {
 
 export const findOndBookReport = async (id) => {
     const response = await api.get(`/book-reports/${id}`);
-    return response.data.bookReport;
+    return response.data;
 };
 
 export const saveBookmark = async (userToken, reportId, isBookmarked) => {
@@ -57,3 +57,23 @@ export const saveBookmark = async (userToken, reportId, isBookmarked) => {
 
     return response.data.isBookmarked;
 };
+
+export const saveComment = async (userToken, reportId, comment) => {
+    const response = await api.post(`/book-reports/${reportId}/users/${userToken}/comment`, {
+        data: {
+            comment
+        }
+    });
+
+    return response.data.comments;
+};
+
+export const deleteComment = async (userToken, reportId, commentId) => {
+    const response = await api.delete(`/book-reports/${reportId}/users/${userToken}/comment`, {
+        data: {
+            commentId
+        }
+    })
+
+    return response.data.comments
+}

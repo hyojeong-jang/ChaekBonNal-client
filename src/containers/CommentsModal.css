@@ -10,7 +10,7 @@
     justify-content: center;
 }
 
-.innerReport, .comments {
+.innerReport, .commentsContainer {
     background: white;
     padding: 1rem;
 }
@@ -20,7 +20,7 @@
     height: 700px;
 }
 
-.comments {
+.commentsContainer {
     width: 500px;
     height: 700px;
 }
