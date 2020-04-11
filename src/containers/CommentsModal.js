@@ -1,31 +1,30 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import { getUserData } from '../api/userAPI'
 import * as api from '../api/bookAPI';
+import { deleteBookReport } from '../api/userAPI';
 import './CommentsModal.css';
+import Writing from './Writing';
 
 export default class CommentsModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            author: null,
             comments: null,
-            comment: '',
             bookReport: null,
+            comment: '',
+            userName: '',
             defaultChecked: '',
             isBookmarked: false,
             userToken: localStorage.token,
-            userName: '',
-            isOwner: false
         };
     }
 
     componentDidMount() { 
         this._getBookReport();
         this._isUserChecked();
-    }
-
-    componentDidUpdate() {
-        console.log('component did update');
     }
 
     _bookmark = () => {
@@ -37,7 +36,8 @@ export default class CommentsModal extends Component {
 
         this.setState({
             bookReport: bookReport.bookReport,
-            comments: bookReport.comments
+            comments: bookReport.comments,
+            author: bookReport.author
         });
     }
 
@@ -76,25 +76,61 @@ export default class CommentsModal extends Component {
         this.setState({ comments: withoutDeletedComment })
     }
 
+    _onClickDeleteReport = async () => {
+        await deleteBookReport(this.state.userToken, this.props.bookReportId);
+        window.location.reload();
+    }
+
     render() {
+        const {
+            author,
+            userName,
+            comments,
+            bookReport,
+            defaultChecked
+        } = this.state;
+
         return (
             <div className='outerContainer'>
                 <div className='innerReport'>
+                    
                     {
-                        this.state.bookReport
+                        bookReport
                         && <>
                             <input
                                 type="checkbox" 
                                 onChange={this._bookmark}
-                                defaultChecked={this.state.defaultChecked}
+                                defaultChecked={defaultChecked}
                             />
-                            <div>{this.state.bookReport.book_info.title}</div>
-                            <div>{this.state.bookReport.book_info.author}</div>
-                            <div>{this.state.bookReport.book_info.category}</div>
-                            <div>{this.state.bookReport.title}</div>
-                            <img src={this.state.bookReport.image_url}/>
-                            <div>{this.state.bookReport.quote}</div> 
-                            <div>{this.state.bookReport.text}</div>
+                            {
+                                author.name === userName
+                                && (
+                                    <>
+                                        <Link to={`/writing/edit?id=${author._id}`}>
+                                            <button>수정하기</button>
+                                        </Link>
+                                        <input
+                                            type='button'
+                                            value='게시물 삭제'
+                                            onClick={this._onClickDeleteReport}
+                                        />
+                                        // 여기서부터 시작
+                                        // 독후감 쓰기 페이지에 스테이트 텍스트 남아있는거 먼저 처리하기
+                                        // 경로마다 사용자 인증 로직 넣고 인증 안되어있으면 로그인페이지로 라우팅
+                                        // 잔 버그 고치고
+                                        // 게시물 수정 어케 할건지 생각해보기
+                                        // Writing 재사용 or 새로운 컴포넌트 만들꺼?
+
+                                    </>
+                                )
+                            }
+                            <div>{bookReport.book_info.title}</div>
+                            <div>{bookReport.book_info.author}</div>
+                            <div>{bookReport.book_info.category}</div>
+                            <div>{bookReport.title}</div>
+                            <img src={bookReport.image_url}/>
+                            <div>{bookReport.quote}</div> 
+                            <div>{bookReport.text}</div>
                         </>
                     }
                     <button onClick={this._onClickCloseButton}>Close</button>
@@ -102,15 +138,15 @@ export default class CommentsModal extends Component {
                 <div className='commentsContainer'>
                     <div className='comment'>
                         {
-                            this.state.comments
-                            && this.state.comments.map((el, index) => {
+                            comments
+                            && comments.map((el, index) => {
                                 return (
                                     <div key={index}>
                                         {el.text}
                                         {el.author.name}
                                         {el.date}
                                         {
-                                            this.state.userName === el.author.name
+                                            userName === el.author.name
                                             && <input
                                                 type='button'
                                                 value='삭제하기'

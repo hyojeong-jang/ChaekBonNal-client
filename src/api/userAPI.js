@@ -14,3 +14,8 @@ export const getUserBookmarks = async (userToken) => {
     const response = await api.get(`users/${userToken}/bookmarks`);
     return response.data.userBookmarks;
 };
+
+export const deleteBookReport = async (userToken) => {
+    const response = await api.delete(`users/${userToken}/writing`);
+    return response.data.success;
+}
