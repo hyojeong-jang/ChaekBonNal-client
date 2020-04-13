@@ -14,6 +14,7 @@ const TextDetection = () => {
     const history = useHistory();
 
     const dataUrl = useSelector(state => state.bookReports.dataUrl);
+    const reportId = useSelector(state => state.bookReports.id);
 
     const [ text, setText ] = useState('');
     const [ crop, setCrop ] = useState({
@@ -31,8 +32,13 @@ const TextDetection = () => {
 
     const onClickDoneButton = useCallback(() => {
         dispatch(receiveDetectedText(text));
-        history.push('/writing');
-    });
+
+        if (reportId) {
+            history.push(`/writing?id=${reportId}`);
+        } else {
+            history.push('/writing');
+        }
+    }, [reportId, text]);
 
     const onCropChange = useCallback(crop => {
         setCrop({ crop });

@@ -98,7 +98,7 @@ const App = () => {
                             ))
                         }
                         </FlipPage>
-                    </div> 
+                    </div>
                 )
             }
             {

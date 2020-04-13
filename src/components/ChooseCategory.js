@@ -10,13 +10,13 @@ const ChooseCategory = () => {
         return new URLSearchParams(useLocation().search);
     }
     const query = useQuery();
-      
+
     const onSubmit = useCallback(async () => {
         const userName = query.get('user');
-    
+
         if (choosenCategory.length) {
             const choosen = await categoryAPI(choosenCategory, userName);
-    
+
             alert(`${choosen}이(가) 제출되었습니다. 반영된 독후감 피드를 확인해보세요!`);
             history.push('/');
         } else {

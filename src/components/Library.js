@@ -17,8 +17,6 @@ const Library = () => {
             setLibrary(bookReports);
         }
         getlibrary();
-        return () => {    
-        }
     }, [])
 
     return (

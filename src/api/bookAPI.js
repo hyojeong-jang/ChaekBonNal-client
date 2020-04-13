@@ -1,26 +1,41 @@
 import api from './config';
 
 export const saveBookReport = async ({
-    userName,
-    selectedBook,
-    selectedCategory,
+    editMode,
+    reportId,
+    userToken,
+    quote,
     imageUrl,
-    text,
-    title,
-    quote
+    draftsText,
+    draftsTitle,
+    selectedBook,
+    selectedCategory
 }) => {
-
-    const response = await api.post(`/users/${userName}/book-report`, {
-        data: {
-            selectedBook,
-            selectedCategory,
-            imageUrl,
-            text,
-            title,
-            quote
-        }
-    })  
-    return response.data;
+    if (editMode) {
+        await api.put(`/users/${userToken}/book-report`, {
+            data: {
+                reportId,
+                quote,
+                imageUrl,
+                draftsText,
+                draftsTitle,
+                selectedBook,
+                selectedCategory
+            }
+        });
+    } else {
+        await api.post(`/users/${userToken}/book-report`, {
+            data: {
+                quote,
+                imageUrl,
+                draftsText,
+                draftsTitle,
+                selectedBook,
+                selectedCategory
+            }
+        });
+    }
+    return;
 };
 
 export const receiveMemberBookReport = async (userToken) => {

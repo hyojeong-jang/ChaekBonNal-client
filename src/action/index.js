@@ -32,6 +32,10 @@ export const drafts = (text, title) => ({
     title
 });
 
+export const clearDrafts = () => ({
+    type: types.CLEAR_DRAFTS
+});
+
 export const draftsImage = (dataUrl) =>  ({
     type: types.DRAFTS_IMAGE,
     dataUrl
@@ -46,4 +50,27 @@ export const receiveBookmark = ({ isBookmarked, userInfo }) => ({
     type: types.RECEIVE_BOOKMARK,
     isBookmarked,
     userInfo
+});
+
+export const dispatchBookReportData = (bookReport) => ({
+    type: types.DISPATCH_BOOKREPORT_DATA,
+    bookReport
+});
+
+export const editModeData = (reportId) => ({
+    type: types.EDIT_MODE_DATA,
+    reportId
+});
+
+export const changedImageInEditMode = (bookReport, image) => ({
+    type: types.CHANGED_IMAGE_IN_EDIT_MODE,
+    bookReport,
+    image
+});
+
+export const selectedBookInEditMode = (bookReport, book, category) => ({
+    type : types.SELECTED_BOOK_IN_EDIT_MODE,
+    bookReport,
+    book,
+    category
 });

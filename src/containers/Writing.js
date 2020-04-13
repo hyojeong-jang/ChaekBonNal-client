@@ -1,98 +1,141 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { useHistory, Link } from 'react-router-dom';
-import { saveBookReport } from '../api/bookAPI'
+import { useHistory, useLocation } from 'react-router-dom';
+
+import * as api from '../api/bookAPI';
+import * as actions from '../action/index';
 import { bookSearchAPI } from '../api/bookSearchAPI';
-import { receiveSearchResult, drafts } from '../action/index'
 
 const Writing = () => {
     const history = useHistory();
     const dispatch = useDispatch();
+    const userToken = localStorage.token;
 
-    const isMember = localStorage.token;
-    if (!isMember) {
+    if (!userToken) {
         history.push('/login');
     }
 
-    const draftsTitle = useSelector(state => state.bookReports.title);
-    const draftsText = useSelector(state => state.bookReports.text);
-    const [ text, setText ] = useState(draftsText);
-    const [ title, setTitle ] = useState(draftsTitle);
-    let word = '';
+    const useQuery = () => new URLSearchParams(useLocation().search);
+    const query = useQuery();
 
-    const userName = useSelector(state => state.user.name);
-    const imageUrl = useSelector(state => state.bookReports.image);
+    const text = useSelector(state => state.bookReports.text);
     const quote = useSelector(state => state.bookReports.quote);
+    const title = useSelector(state => state.bookReports.title);
+    const imageUrl = useSelector(state => state.bookReports.image);
     const selectedBook = useSelector(state => state.book.selected);
     const selectedCategory = useSelector(state => state.book.category);
 
-    const onClickSearchButton = useCallback(async () => {
-        const searchResult = await bookSearchAPI(userName, word);
-        dispatch(receiveSearchResult(searchResult));
-        history.push(`/writing/book-search`);
+    const [ editMode, setEditMode ] = useState(false);
+    const [ searchWord, setSearchWord ] = useState('');
+    const [ draftsText, setDraftsText ] = useState('');
+    const [ draftsTitle, setDraftsTitle ] = useState('');
+
+    useEffect(() => {
+        setDraftsText(text);
+        setDraftsTitle(title);
+    }, [text, title]);
+
+    useEffect(() => {
+        const getBookReport = async () => {
+            if (query.has('id')) {
+                const reportId = query.get('id');
+                dispatch(actions.editModeData(reportId));
+                setEditMode(true);
+
+                const bookReport = await api.findOndBookReport(reportId);
+
+                if (imageUrl) {
+                    return dispatch(actions.changedImageInEditMode(
+                        bookReport.bookReport,
+                        imageUrl
+                    ));
+                }
+
+                if (selectedCategory) {
+                    return dispatch(actions.selectedBookInEditMode(
+                        bookReport.bookReport,
+                        selectedBook,
+                        selectedCategory
+                    ));
+                }
+                dispatch(actions.dispatchBookReportData(bookReport.bookReport));
+            }
+        }
+        getBookReport();
     }, []);
 
-    const onClickAddImageButton = useCallback(() => {
-        dispatch(drafts(text, title));
-    })
+    const onSearchButtonClick = useCallback(async () => {
+        const searchResult = await bookSearchAPI(userToken, searchWord);
 
-    const onClickDoneButton = useCallback(async () => {
-        await saveBookReport({
-            userName,
-            selectedBook,
-            selectedCategory,
+        dispatch(actions.drafts(draftsText, draftsTitle));
+        dispatch(actions.receiveSearchResult(searchResult));
+        history.push('/writing/book-search');
+    }, [searchWord, draftsText, draftsTitle]);
+
+    const onAddImageButtonClick = useCallback(() => {
+        history.push('/writing/attaching-image');
+        dispatch(actions.drafts(draftsText, draftsTitle));
+    }, [draftsText, draftsTitle]);
+
+    const onDoneButtonClick = useCallback(async () => {
+        const reportId = query.get('id');
+
+        await api.saveBookReport({
+            editMode,
+            reportId,
+            userToken,
+            quote,
             imageUrl,
-            text,
-            title,
-            quote
-        })
+            draftsText,
+            draftsTitle,
+            selectedBook,
+            selectedCategory
+        });
+        dispatch(actions.clearDrafts());
         history.push('/');
-    });
-    
+    }, [editMode, draftsTitle, draftsText]);
+
     return (
         <>
             <input type='search'
                 name='bookSearch'
-                onChange={(e) => word = e.target.value}
+                onChange={(e) => setSearchWord(e.target.value)}
             />
             <button
-                onClick={onClickSearchButton}
+                onClick={onSearchButtonClick}
             >Search</button>
             {
                 selectedBook
-                ? <div>
+                && <div>
                     <input type='text' placeholder={selectedBook.title} />
                     <input type='text' placeholder={selectedBook.author} />
                     <input type='text' placeholder={selectedCategory} />
                 </div>
-                : []
             }
             <img src={imageUrl} />
-            <Link to='/writing/attaching-image'>
-                <button
-                    onClick={onClickAddImageButton}
-                >책 사진 넣기</button>
-            </Link>
-            <input 
+            <button
+                onClick={onAddImageButtonClick}
+            >책 사진 넣기</button>
+            <input
                 className='title'
                 type='text'
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
+                value={draftsTitle}
+                onChange={(e) => setDraftsTitle(e.target.value)}
             />
             <textarea
                 className='text'
                 rows='10'
                 cols='50'
-                value={text}
-                onChange={(e) => setText(e.target.value)}
+                defaultValue={draftsText}
+                onChange={(e) => setDraftsText(e.target.value)}
             />
             <input
                 className='quote'
                 type='text'
-                value={quote}
+                defaultValue={quote}
             />
             <button
-                onClick={onClickDoneButton}
+                onClick={onDoneButtonClick}
             >Done</button>
         </>
     );

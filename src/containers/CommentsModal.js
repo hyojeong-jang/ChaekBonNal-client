@@ -5,7 +5,6 @@ import { getUserData } from '../api/userAPI'
 import * as api from '../api/bookAPI';
 import { deleteBookReport } from '../api/userAPI';
 import './CommentsModal.css';
-import Writing from './Writing';
 
 export default class CommentsModal extends Component {
     constructor(props) {
@@ -22,13 +21,18 @@ export default class CommentsModal extends Component {
         };
     }
 
-    componentDidMount() { 
+    componentDidMount() {
         this._getBookReport();
-        this._isUserChecked();
+        this._userBookmarked();
     }
 
-    _bookmark = () => {
-        this.setState({ isBookmarked: !this.state.isBookmarked });
+    _bookmark = (e) => {
+        if (this.state.userToken) {
+            this.setState({ isBookmarked: !this.state.isBookmarked });
+        } else {
+            e.target.checked = false
+            alert('로그인하시면 북마크할 수 있어요!');
+        }
     }
 
     _getBookReport = async () => {
@@ -41,23 +45,27 @@ export default class CommentsModal extends Component {
         });
     }
 
-    _isUserChecked = async () => {
-        const userData = await getUserData(this.state.userToken);
-        const isUserChecked = userData.bookmarks.includes(this.props.bookReportId);
+    _userBookmarked = async () => {
+        if (this.state.userToken) {
+            const userData = await getUserData(this.state.userToken);
+            const isUserBookmarked = userData.bookmarks.includes(this.props.bookReportId);
 
-        this.setState({ userName: userData.name });
-    
-        if (isUserChecked) {
-            this.setState({ defaultChecked: 'checked' });
-            this.setState({ isBookmarked: true });
-        } else {
-            this.setState({ defaultChecked: '' });
-            this.setState({ isBookmarked: false });
+            this.setState({ userName: userData.name });
+
+            if (isUserBookmarked) {
+                this.setState({ defaultChecked: 'checked' });
+                this.setState({ isBookmarked: true });
+            } else {
+                this.setState({ defaultChecked: '' });
+                this.setState({ isBookmarked: false });
+            }
         }
     }
 
-    _onClickCloseButton = async () => {
-        await api.saveBookmark(this.state.userToken, this.props.bookReportId, this.state.isBookmarked);
+    _onCloseButtonClick = async () => {
+        if (this.state.userToken) {
+            await api.saveBookmark(this.state.userToken, this.props.bookReportId, this.state.isBookmarked);
+        }
         this.props.setModal(false);
     }
 
@@ -65,18 +73,22 @@ export default class CommentsModal extends Component {
         this.setState({ comment: e.target.value });
     }
 
-    _onClickAddCommentButton = async () => {
-        const savedComment = await api.saveComment(this.state.userToken, this.props.bookReportId, this.state.comment);
+    _onAddCommentButtonClick = async () => {
+        if (this.state.userToken) {
+            const savedComment = await api.saveComment(this.state.userToken, this.props.bookReportId, this.state.comment);
 
-        this.setState({ comments: savedComment });
+            this.setState({ comments: savedComment });
+        } else {
+            alert('로그인하시면 댓글을 남길 수 있어요!');
+        }
     }
 
-    _onClickDeleteButton = async (e) => {
+    _onDeleteButtonClick = async (e) => {
         const withoutDeletedComment = await api.deleteComment(this.state.userToken, this.props.bookReportId, e.target.name);
         this.setState({ comments: withoutDeletedComment })
     }
 
-    _onClickDeleteReport = async () => {
+    _onDeleteReportButtonClick = async () => {
         await deleteBookReport(this.state.userToken, this.props.bookReportId);
         window.location.reload();
     }
@@ -93,12 +105,11 @@ export default class CommentsModal extends Component {
         return (
             <div className='outerContainer'>
                 <div className='innerReport'>
-                    
                     {
                         bookReport
                         && <>
                             <input
-                                type="checkbox" 
+                                type="checkbox"
                                 onChange={this._bookmark}
                                 defaultChecked={defaultChecked}
                             />
@@ -106,21 +117,14 @@ export default class CommentsModal extends Component {
                                 author.name === userName
                                 && (
                                     <>
-                                        <Link to={`/writing/edit?id=${author._id}`}>
+                                        <Link to={`/writing?id=${bookReport._id}`}>
                                             <button>수정하기</button>
                                         </Link>
                                         <input
                                             type='button'
                                             value='게시물 삭제'
-                                            onClick={this._onClickDeleteReport}
+                                            onClick={this._onDeleteReportButtonClick}
                                         />
-                                        // 여기서부터 시작
-                                        // 독후감 쓰기 페이지에 스테이트 텍스트 남아있는거 먼저 처리하기
-                                        // 경로마다 사용자 인증 로직 넣고 인증 안되어있으면 로그인페이지로 라우팅
-                                        // 잔 버그 고치고
-                                        // 게시물 수정 어케 할건지 생각해보기
-                                        // Writing 재사용 or 새로운 컴포넌트 만들꺼?
-
                                     </>
                                 )
                             }
@@ -129,11 +133,11 @@ export default class CommentsModal extends Component {
                             <div>{bookReport.book_info.category}</div>
                             <div>{bookReport.title}</div>
                             <img src={bookReport.image_url}/>
-                            <div>{bookReport.quote}</div> 
+                            <div>{bookReport.quote}</div>
                             <div>{bookReport.text}</div>
                         </>
                     }
-                    <button onClick={this._onClickCloseButton}>Close</button>
+                    <button onClick={this._onCloseButtonClick}>Close</button>
                 </div>
                 <div className='commentsContainer'>
                     <div className='comment'>
@@ -151,7 +155,7 @@ export default class CommentsModal extends Component {
                                                 type='button'
                                                 value='삭제하기'
                                                 name={el._id}
-                                                onClick={this._onClickDeleteButton}
+                                                onClick={this._onDeleteButtonClick}
                                             />
                                         }
                                     </div>
@@ -163,7 +167,7 @@ export default class CommentsModal extends Component {
                         <textarea
                             onChange={this._writeComment}
                         ></textarea>
-                        <button onClick={this._onClickAddCommentButton}>댓글남기기</button>
+                        <button onClick={this._onAddCommentButtonClick}>댓글남기기</button>
                     </div>
                 </div>
             </div>

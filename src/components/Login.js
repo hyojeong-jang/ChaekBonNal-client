@@ -18,7 +18,7 @@ const Login = () => {
         const hasChoosenCategory = await res.choosen_category.length;
 
         if (hasChoosenCategory) {
-            history.push('/');
+            history.goBack(1);
         } else {
             history.push(`/choose-category/?user=${res.name}`);
         }
@@ -29,7 +29,7 @@ const Login = () => {
         history.push('/login');
         alert('로그인에 실패했습니다. 다시 시도해주세요.');
     };
-    
+
     return (
         <div className='background'>
             <div className='wrapper'>

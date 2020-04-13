@@ -17,8 +17,6 @@ const Bookmarks = () => {
             setBookmarks(bookReports);
         }
         getbookmarks();
-        return () => {    
-        }
     }, [])
 
     return (

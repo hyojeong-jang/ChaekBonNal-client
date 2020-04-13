@@ -14,11 +14,10 @@ const AttachingImage = () => {
     const [ imageFile, setImageFile ] = useState(null);
 
     const userToken = localStorage.token;
-    let resultUrl = '';
+    let resultUrl = null;
 
     const onChangeImageFile = useCallback((e) => {
         setImageFile(e.target.files[0]);
-        
         Resizer.imageFileResizer(
             e.target.files[0],
             300,
@@ -37,10 +36,10 @@ const AttachingImage = () => {
     const onClickAddButton = useCallback(async () => {
         if (!resultUrl) {
             resultUrl = await saveBookImage(userToken, imageFile);
-        } 
+        }
         setImageSrc(resultUrl);
         dispatch(receiveImageData(resultUrl));
-        history.push('/writing');
+        history.goBack(1);
     });
 
     const startTextDetection = useCallback(async () => {
@@ -61,7 +60,7 @@ const AttachingImage = () => {
                 name='photo'
                 onChange={onChangeImageFile}
                 accept='image/*;capture=camera'
-            /> 
+            />
             <button onClick={startTextDetection}>인용구 추출</button>
             <button onClick={onClickAddButton}>첨부하기</button>
         </>

@@ -1,4 +1,4 @@
-import { RECEIVE_SEARCH_DATA, SELECTED_BOOK } from '../constants/index';
+import * as actions from '../constants/index';
 
 export const initialState = {
     searchList: '',
@@ -8,14 +8,30 @@ export const initialState = {
 
 export const book = (state = initialState, action) => {
     switch (action.type) {
-        case RECEIVE_SEARCH_DATA:
+        case actions.RECEIVE_SEARCH_DATA:
             return {
-                searchList: action.searchData 
+                searchList: action.searchData
             };
-        case SELECTED_BOOK:
+        case actions.SELECTED_BOOK:
             return {
                 selected: action.book,
                 category: action.category
+            }
+        case actions.DISPATCH_BOOKREPORT_DATA:
+            return {
+                selected: action.bookReport.book_info,
+                category: action.bookReport.book_info.category
+            }
+        case actions.SELECTED_BOOK_IN_EDIT_MODE:
+            return {
+                selected: action.book,
+                category: action.category
+            }
+        case actions.CLEAR_DRAFTS:
+            return {
+                searchList: '',
+                selected: {},
+                category: ''
             }
         default:
             return state;
