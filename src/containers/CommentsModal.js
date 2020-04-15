@@ -30,7 +30,7 @@ export default class CommentsModal extends Component {
         if (this.state.userToken) {
             this.setState({ isBookmarked: !this.state.isBookmarked });
         } else {
-            e.target.checked = false
+            e.target.checked = false;
             alert('로그인하시면 북마크할 수 있어요!');
         }
     }

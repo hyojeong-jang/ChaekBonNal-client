@@ -1,17 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-
-import { receiveMemberBookReport, receiveNonMemberBookReport } from '../api/bookAPI';
+import * as api from '../api/bookAPI';
 import { byUserPreference } from '../action/index'
 
-import { GoogleLogout } from 'react-google-login';
 import FlipPage from 'react-flip-page';
-
 import CommentsModal from './CommentsModal';
 import ModalPortal from '../ModalPortal';
-import './App.css';
-
+import Header from '../components/Header';
+import styles from './App.module.css';
 
 const App = () => {
     const userToken = localStorage.token;
@@ -25,75 +21,84 @@ const App = () => {
     useEffect(() => {
         const receiveData = async () => {
             if (userToken) {
-                bookReport = await receiveMemberBookReport(userToken);
+                bookReport = await api.receiveMemberBookReport(userToken);
             } else {
-                bookReport = await receiveNonMemberBookReport();
+                bookReport = await api.receiveNonMemberBookReport();
             }
             dispatch(byUserPreference(bookReport));
         };
         receiveData();
     }, [])
 
-    const onLogoutButtonClick = useCallback(() => {
-        localStorage.removeItem('token');
-        window.location.reload();
-    });
-
     return (
-        <>
-            <div className='header'>
-                <img src='/images/Logo.png' className='logo' />
-                {
-                    localStorage.token
-                    && <GoogleLogout
-                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                        buttonText='Logout'
-                        className='logout'
-                        onLogoutSuccess={onLogoutButtonClick}
-                    />
-                }
+        <div className={styles.container}>
+            <div className={styles.header}>
+                <Header/>
             </div>
-            <Link to='/login'>
-                <img src='/images/login.png' className='start' />
-            </Link>
-            <Link to='/writing'>
-                <img src='/images/writing.png' className='btn writing' />
-            </Link>
-            <Link to='/library'>
-                <img src='/images/mypage.png' className='btn mypage' />
-            </Link>
             {
                 bookReports
                 && (
-                    <div className='app'>
+                    <div className={styles.app}>
                         <FlipPage
-                            className='book'
+                            className={styles.book}
                             showSwipeHint
                             uncutPages
                             orientation='horizontal'
-                            width='1200'
-                            height='800'
+                            width='1000'
+                            height='700'
                             pageBackground='#ffffff'
                             animationDuration='400'
-                            style={{top: '20%'}}
                         >
                         {
                             bookReports.map((page, index) => (
                                 <article
                                     key={index}
-                                    className='article'
+                                    className={styles.article}
                                     onClick={() => {
                                         setIsModalOpened(true);
                                         setBookReportId(page._id);
                                     }}
                                 >
-                                    <div>{page.book_info.title}</div>
-                                    <img src={page.image_url} />
-                                    <div>{page.book_info.author}</div>
-                                    <div>{page.book_info.category}</div>
-                                    <div>{page.title}</div>
-                                    <div>{page.text}</div>
-                                    <div>{page.quote}</div>
+                                    <div className={styles.leftContainer}>
+                                        <h1>
+                                            {page.title}
+                                        </h1>
+                                        <img
+                                            src={page.image_url}
+                                            className={styles.image}
+                                        />
+                                        <blockquote>
+                                            {page.quote}
+                                        </blockquote>
+                                        <div className={styles.bookInfo}>
+                                            <div>
+                                                <img src={page.book_info.image} />
+                                            </div>
+                                            <div className={styles.bookDetail}>
+                                            <span>Title</span>
+                                            <a href={page.book_info.link}>
+                                                {page.book_info.title.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
+                                            </a>
+                                            <span>Author</span>
+                                            {page.book_info.author.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
+                                            <span>Main Category</span>
+                                            {page.book_info.category}
+                                            <span>Publisher</span>
+                                            {page.book_info.publisher}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className={styles.rightContainer}>
+                                        <div className={styles.text}>
+                                            {page.text}
+                                        </div>
+                                        <div className={styles.userInfo}>
+                                            <img className={styles.avartar} src={page.author.imageUrl} />
+                                            <a className={styles.name}>
+                                                {page.author.name}
+                                            </a>
+                                        </div>
+                                    </div>
                                 </article>
                             ))
                         }
@@ -110,7 +115,7 @@ const App = () => {
                     />
                 </ModalPortal>
             }
-        </>
+        </div>
     );
 }
 

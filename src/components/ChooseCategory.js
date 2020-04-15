@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
 import categoryAPI from '../api/categoryAPI';
+import styles from './ChooseCategory.module.css';
 
 const ChooseCategory = () => {
     const category = ['총류', '철학', '종교', '사회과학', '자연과학', '기술과학', '예술', '언어', '문학', '역사'];
@@ -33,23 +34,27 @@ const ChooseCategory = () => {
     }, []);
 
     return (
-        <>
+        <div className={styles.container}>
+            <p>선호하는 카테고리를 모두 선택해주세요.</p>
             {
                 category.map((el, index) => {
                     return (
-                        <div key={index}>
+                        <div key={index} className={styles.element}>
                             <input
                                 type='checkbox'
                                 value={el}
                                 onChange={onChange}
+                                id={index}
                             />
-                            <label>{el}</label>
+                            <label for={index} className={styles.text}>
+                                {el}
+                            </label>
                         </div>
                     )
                 })
             }
-            <button onClick={onSubmit}>Submit</button>
-        </>
+            <button className={styles.button} onClick={onSubmit}>Submit</button>
+        </div>
     );
 }
 

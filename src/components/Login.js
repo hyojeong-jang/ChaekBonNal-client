@@ -6,8 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import loginAPI from '../api/LoginAPI';
 
 import { receiveUserData } from '../action/index';
-import './Login.css';
-
+import styles from './Login.module.css';
 
 const Login = () => {
     const history = useHistory();
@@ -31,24 +30,24 @@ const Login = () => {
     };
 
     return (
-        <div className='background'>
-            <div className='wrapper'>
-                <div className='main'>
-                    <Link to='/'>
-                        <img src='/images/Logo.png' className='logo' />
-                    </Link>
-                    <div className='p'>
-                        오늘은 책을 보았다.
-                    </div>
-                    <GoogleLogin
-                        className='login'
-                        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
-                        onSuccess={responseGoogle}
-                        onFailure={loginFailed}
-                    />
+        <div className={styles.background}>
+            <div className={styles.wrapper}>
+                <Link to='/'>
+                    <img src='/images/Logo.png' className={styles.logo} />
+                </Link>
+                <div className={styles.p}>
+                    A book that is shut is but a block
                 </div>
-                <div className='side'>
+                <div className={styles.p2}>
+                    Thomas Fuller
                 </div>
+                <GoogleLogin
+                    className={styles.login}
+                    clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}
+                    onSuccess={responseGoogle}
+                    onFailure={loginFailed}
+                    style={{ width: 300 }}
+                />
             </div>
         </div>
     );

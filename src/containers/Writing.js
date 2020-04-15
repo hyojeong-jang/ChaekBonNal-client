@@ -5,6 +5,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import * as api from '../api/bookAPI';
 import * as actions from '../action/index';
 import { bookSearchAPI } from '../api/bookSearchAPI';
+import styles from './Writing.module.css';
 
 const Writing = () => {
     const history = useHistory();
@@ -96,48 +97,57 @@ const Writing = () => {
     }, [editMode, draftsTitle, draftsText]);
 
     return (
-        <>
-            <input type='search'
-                name='bookSearch'
-                onChange={(e) => setSearchWord(e.target.value)}
-            />
-            <button
-                onClick={onSearchButtonClick}
-            >Search</button>
+        <div className={styles.container}>
+            <div className={styles.searchBar}>
+                <input type='text'
+                    className={styles.searchBox}
+                    name='bookSearch'
+                    onChange={(e) => setSearchWord(e.target.value)}
+                />
+                <button
+                    className={styles.searchButton}
+                    onClick={onSearchButtonClick}
+                >search</button>
+            </div>
             {
                 selectedBook
-                && <div>
-                    <input type='text' placeholder={selectedBook.title} />
-                    <input type='text' placeholder={selectedBook.author} />
-                    <input type='text' placeholder={selectedCategory} />
+                && <div className={styles.selectedBook}>
+                    <input type='text' placeholder={selectedBook.title} readOnly/>
+                    <input type='text' placeholder={selectedBook.author} readOnly/>
+                    <input type='text' placeholder={selectedCategory} readOnly/>
                 </div>
             }
-            <img src={imageUrl} />
-            <button
-                onClick={onAddImageButtonClick}
-            >책 사진 넣기</button>
             <input
-                className='title'
+                className={styles.title}
                 type='text'
                 value={draftsTitle}
+                placeholder='제목을 입력해주세요.'
                 onChange={(e) => setDraftsTitle(e.target.value)}
             />
             <textarea
-                className='text'
+                className={styles.text}
                 rows='10'
                 cols='50'
+                placeholder='글을 입력해주세요.'
                 defaultValue={draftsText}
                 onChange={(e) => setDraftsText(e.target.value)}
             />
             <input
-                className='quote'
+                className={styles.quote}
+                placeholder='사진에서 인용구를 추출하거나, 입력해주세요.'
                 type='text'
                 defaultValue={quote}
             />
+            <img src={imageUrl} className={styles.image} />
             <button
+                className={styles.imageButton}
+                onClick={onAddImageButtonClick}
+            >책 사진 넣기</button>
+            <button
+                className={styles.doneButton}
                 onClick={onDoneButtonClick}
-            >Done</button>
-        </>
+            >게시하기</button>
+        </div>
     );
 };
 
