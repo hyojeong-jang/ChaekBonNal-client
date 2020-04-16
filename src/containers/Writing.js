@@ -52,13 +52,13 @@ const Writing = () => {
                     ));
                 }
 
-                if (selectedCategory) {
-                    return dispatch(actions.selectedBookInEditMode(
-                        bookReport.bookReport,
-                        selectedBook,
-                        selectedCategory
-                    ));
-                }
+                // if (selectedCategory) {
+                //     return dispatch(actions.selectedBookInEditMode(
+                //         bookReport.bookReport,
+                //         selectedBook,
+                //         selectedCategory
+                //     ));
+                // }
                 dispatch(actions.dispatchBookReportData(bookReport.bookReport));
             }
         }

@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 import App from '../containers/App';
-import Login from '../components/Login';
+import Login from '../containers/Login';
 import ChooseCategory from '../components/ChooseCategory';
 import Writing from '../containers/Writing';
 import BookSearch from '../components/BookSearch';
