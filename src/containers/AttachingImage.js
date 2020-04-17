@@ -1,10 +1,10 @@
 import React, { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import Resizer from 'react-image-file-resizer';
 
 import { receiveImageData, draftsImage } from '../action/index';
 import { saveBookImage } from '../api/bookAPI';
+import styles from './css/AttachingImage.module.css';
 
 const AttachingImage = () => {
   const dispatch = useDispatch();
@@ -18,19 +18,13 @@ const AttachingImage = () => {
 
   const onChangeImageFile = useCallback((e) => {
     setImageFile(e.target.files[0]);
-    Resizer.imageFileResizer(
-      e.target.files[0],
-      300,
-      300,
-      'JPG',
-      100,
-      0,
-      uri => {
-        setImageSrc(uri);
-        dispatch(draftsImage(uri));
-      },
-      'base64'
-    );
+
+    const reader = new FileReader();
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = () => {
+      setImageSrc(reader.result);
+      dispatch(draftsImage(reader.result));
+    };
   });
 
   const onClickAddButton = useCallback(async () => {
@@ -49,21 +43,33 @@ const AttachingImage = () => {
   });
 
   return (
-    <>
-      {
-        imageSrc
-        && <img src={imageSrc} />
-      }
-
+    <div className={styles.container}>
+    {
+      imageSrc
+      && <div className={styles.imageContainer}>
+        <img className={styles.image} src={imageSrc} />
+      </div>
+    }
+    <label for='fileBtn' className={styles.fileContainer}>
+      <p>파일 선택</p>
       <input
         type='file'
         name='photo'
         onChange={onChangeImageFile}
+        id='fileBtn'
+        className={styles.fileButton}
         accept='image/*;capture=camera'
       />
-      <button onClick={startTextDetection}>인용구 추출</button>
-      <button onClick={onClickAddButton}>첨부하기</button>
-    </>
+    </label>
+    <button
+      className={styles.detectionButton}
+      onClick={startTextDetection}
+    >인용구 추출</button>
+    <button
+      className={styles.addButton}
+      onClick={onClickAddButton}
+    >첨부하기</button>
+  </div>
   );
 }
 

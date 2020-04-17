@@ -1,46 +1,46 @@
 import api from './config';
 
 export const saveBookReport = async ({
-    editMode,
-    reportId,
-    userToken,
-    quote,
-    imageUrl,
-    draftsText,
-    draftsTitle,
-    selectedBook,
-    selectedCategory
+  editMode,
+  reportId,
+  userToken,
+  quote,
+  imageUrl,
+  draftsText,
+  draftsTitle,
+  selectedBook,
+  selectedCategory
 }) => {
-    if (editMode) {
-        await api.put(`/users/${userToken}/book-report`, {
-            data: {
-                reportId,
-                quote,
-                imageUrl,
-                draftsText,
-                draftsTitle,
-                selectedBook,
-                selectedCategory
-            }
-        });
-    } else {
-        await api.post(`/users/${userToken}/book-report`, {
-            data: {
-                quote,
-                imageUrl,
-                draftsText,
-                draftsTitle,
-                selectedBook,
-                selectedCategory
-            }
-        });
-    }
-    return;
+  if (editMode) {
+    await api.put(`/users/${userToken}/book-report`, {
+      data: {
+        reportId,
+        quote,
+        imageUrl,
+        draftsText,
+        draftsTitle,
+        selectedBook,
+        selectedCategory
+      }
+    });
+  } else {
+    await api.post(`/users/${userToken}/book-report`, {
+      data: {
+        quote,
+        imageUrl,
+        draftsText,
+        draftsTitle,
+        selectedBook,
+        selectedCategory
+      }
+    });
+  }
+  return;
 };
 
 export const receiveMemberBookReport = async (userToken) => {
-    const response = await api.get(`/users/${userToken}/book-reports`);
-    return response.data.bookReports;
+  const response = await api.get(`/users/${userToken}/book-reports`);
+  return response.data.bookReports;
 };
 
 export const receiveNonMemberBookReport = async () => {

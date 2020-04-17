@@ -1,5 +1,5 @@
-import { bookReports, initialState } from './bookReports';
-import * as actions from '../action/index';
+import { bookReports, initialState } from '../bookReports';
+import * as actions from '../../action/index';
 
 describe('bookReports reducer', () => {
   const bookReport = {

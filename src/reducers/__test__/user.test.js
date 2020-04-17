@@ -1,5 +1,5 @@
-import { user, initialState } from './user';
-import * as actions from '../action/index';
+import { user, initialState } from '../user';
+import * as actions from '../../action/index';
 
 describe('user reducer', () => {
   const userData = {

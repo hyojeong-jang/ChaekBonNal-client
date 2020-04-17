@@ -6,7 +6,7 @@ import { GoogleLogin } from 'react-google-login';
 import loginAPI from '../api/LoginAPI';
 
 import { receiveUserData } from '../action/index';
-import styles from './Login.module.css';
+import styles from './css/Login.module.css';
 
 const Login = () => {
   const history = useHistory();

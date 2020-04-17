@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow } from 'enzyme';
-import Login from './Login';
+import Login from '../Login';
 
 jest.mock('react-router-dom', () => ({
   useHistory: () => ({
@@ -22,7 +22,7 @@ describe('Login Component', () => {
     wrapper = shallow(<Login />);
   });
 
-  xit('Should render without errors', () => {
+  it('Should render without errors', () => {
     expect(wrapper.find('.background').length).toBe(1);
     expect(wrapper.find('.logo').length).toBe(1);
     expect(wrapper.find('.login').length).toBe(1);
@@ -30,7 +30,7 @@ describe('Login Component', () => {
     expect(wrapper.find('.p2').text()).toBe('Thomas Fuller');
   });
 
-  xit('Should not calls responseGoogle function if user unauthorized', () => {
+  it('Should not calls responseGoogle function if user unauthorized', () => {
     wrapper.find('.login').simulate('onSuccess');
     expect(initialProps.responseGoogle).not.toHaveBeenCalled();
   });

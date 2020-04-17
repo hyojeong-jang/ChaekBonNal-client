@@ -4,7 +4,9 @@ import { Link } from 'react-router-dom';
 import { getUserData } from '../api/userAPI'
 import * as api from '../api/bookAPI';
 import { deleteBookReport } from '../api/userAPI';
-import styles from './CommentsModal.module.css';
+import styles from './css/CommentsModal.module.css';
+import { book } from '../reducers/book';
+import { bookReports } from '../reducers/bookReports';
 
 export default class CommentsModal extends Component {
   constructor(props) {
@@ -117,11 +119,11 @@ export default class CommentsModal extends Component {
               { author.name === userName
                 && <>
                   <Link to={`/writing?id=${bookReport._id}`}>
-                    <button className={styles.editButton}>수정하기</button>
+                    <button className={styles.editButton}>Edit</button>
                   </Link>
                   <input
                     type='button'
-                    value='게시물 삭제'
+                    value='Delete'
                     className={styles.deleteButton}
                     onClick={this._onDeleteReportButtonClick}
                   />
@@ -132,21 +134,25 @@ export default class CommentsModal extends Component {
                 {bookReport.book_info.author.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
               </div>
               <div className={styles.title}>{bookReport.title}</div>
-              <img className={styles.image} src={bookReport.image_url}/>
-              <div className={styles.text}>{bookReport.text}</div>
+              <div className={styles.imageContainer}>
+                <img className={styles.image} src={bookReport.image_url}/>
+                <p>
+                  <img className={styles.icon} src='/images/quoteIcon.png' />
+                  {bookReport.quote}
+                </p>
+              </div>
+              <div className={styles.text}>
+                {bookReport.text}
+              </div>
             </>
           }
-          <button
-            className={styles.closeButton}
-            onClick={this._onCloseButtonClick}
-          >Close</button>
         </div>
         <div className={styles.commentsContainer}>
           {
             author
             && <div className={styles.author}>
               <img src={author.imageUrl} />
-              <span className={styles.authorName}>{author.name}</span>
+              <div className={styles.authorName}>{author.name}</div>
             </div>
           }
           <div className={styles.comment}>
@@ -155,27 +161,33 @@ export default class CommentsModal extends Component {
               && comments.map((el, index) => {
                 return (
                   <div key={index} className={styles.commentDetail}>
-                    {el.text}
-                    {el.author.name}
-                    {el.date}
-                    {
-                      userName === el.author.name
-                      && <input
-                        type='button'
-                        value='삭제하기'
-                        name={el._id}
-                        className={styles.commentDeleteButton}
-                        onClick={this._onDeleteButtonClick}
-                      />
-                    }
+                    <div className={styles.oneComment}>
+                      {el.text}&ensp;&ensp;
+                      {
+                        userName === el.author.name
+                        && <input
+                          type='button'
+                          value='X'
+                          name={el._id}
+                          className={styles.commentDeleteButton}
+                          onClick={this._onDeleteButtonClick}
+                        />
+                      }
+                    </div>
+                    <span>{el.author.name}&ensp;&ensp;</span>
+                    <span>{new Date(el.date).toISOString().substring(0, 10)}</span>
                   </div>
                 );
               })
             }
+            <button
+              className={styles.closeButton}
+              onClick={this._onCloseButtonClick}
+            >X</button>
           </div>
           <div className={styles.writeComment}>
-            <textarea onChange={this._writeComment}></textarea>
-            <button onClick={this._onAddCommentButtonClick}>댓글남기기</button>
+            <textarea className={styles.commentInput} onChange={this._writeComment}></textarea>
+            <button onClick={this._onAddCommentButtonClick}>게시</button>
           </div>
         </div>
       </div>

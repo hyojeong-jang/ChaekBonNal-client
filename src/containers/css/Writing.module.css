@@ -1,17 +1,17 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    position: relative;
+  position: relative;
 }
 
 .container {
-    position: absolute;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-    width: 800px;
-    height: 800px;
-    margin: inherit;
+  position: absolute;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  width: 800px;
+  height: 800px;
+  margin: inherit;
 	margin-top: 50px;
 	left: 50%;
 	padding: 20px;
@@ -60,11 +60,11 @@ body {
 
 .selectedBook {
 	top: 10%;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .selectedBook > input {
@@ -124,45 +124,41 @@ body {
 	padding: 10px;
 }
 
-.imageButton {
+.imageButton,.doneButton, .cancelButton {
 	position: absolute;
-    width: 200px;
-    height: 30px;
-    top: 86%;
-    left: 65%;
-    border: 1px solid #e6ecf0;
-    border-radius: 50px;
+  width: 200px;
+  height: 30px;
+  border: 1px solid #e6ecf0;
+  border-radius: 50px;
 }
 
-.imageButton:hover {
-	color: #ffffff !important;
-	background: #f6b93b;
-	border-color: #f6b93b !important;
-	transition: all 0.4s ease 0s;
+.imageButton {
+  top: 81%;
+  left: 65%;
 }
 
 .doneButton {
-	position: absolute;
-    width: 200px;
-    height: 30px;
-    top: 91%;
-    left: 65%;
-    border: 1px solid #e6ecf0;
-    border-radius: 50px;
+  top: 86%;
+  left: 65%;
 }
 
-.doneButton:hover {
+.cancelButton {
+  top: 91%;
+  left: 65%;
+}
+
+.imageButton:hover, .doneButton:hover, .cancelButton:hover {
 	color: #ffffff !important;
-	background: #f6b93b;
-	border-color: #f6b93b !important;
+	background: #a3f098;
+	border-color: #a3f098 !important;
 	transition: all 0.4s ease 0s;
 }
 
 .image {
 	position: absolute;
-    width: 50%;
-    height: 200px;
-    top: 70%;
-    border: 1px solid #e6ecf0;
-    left: 10%;
+  width: 50%;
+  height: 200px;
+  top: 70%;
+  border: 1px solid #e6ecf0;
+  left: 10%;
 }

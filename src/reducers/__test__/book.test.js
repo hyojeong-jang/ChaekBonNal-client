@@ -1,5 +1,5 @@
-import { book, initialState } from './book';
-import * as actions from '../action/index';
+import { book, initialState } from '../book';
+import * as actions from '../../action/index';
 
 describe('book reducer', () => {
   const mockBookReport = {
