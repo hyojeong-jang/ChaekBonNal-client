@@ -1,5 +1,5 @@
 .header {
-  position: relative;
+  position: fixed;
   display: flex;
   flex-direction: column;
   width: 10%;

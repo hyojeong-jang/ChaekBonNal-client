@@ -5,8 +5,6 @@ import { getUserData } from '../api/userAPI'
 import * as api from '../api/bookAPI';
 import { deleteBookReport } from '../api/userAPI';
 import styles from './css/CommentsModal.module.css';
-import { book } from '../reducers/book';
-import { bookReports } from '../reducers/bookReports';
 
 export default class CommentsModal extends Component {
   constructor(props) {
@@ -101,7 +99,7 @@ export default class CommentsModal extends Component {
       userName,
       comments,
       bookReport,
-      defaultChecked
+      defaultChecked,
     } = this.state;
 
     return (
@@ -111,8 +109,8 @@ export default class CommentsModal extends Component {
             bookReport
             && <>
               <input
-                className={styles.bookmarks}
-                type="checkbox"
+                className={styles.bookmarksBox}
+                type='checkbox'
                 onChange={this._bookmark}
                 defaultChecked={defaultChecked}
               />

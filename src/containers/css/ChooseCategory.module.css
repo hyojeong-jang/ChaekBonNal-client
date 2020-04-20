@@ -81,6 +81,7 @@ body {
   transform: translateX(-50%);
   font-size: 15px;
   text-decoration: underline;
+  font-weight: 300;
   border: none;
   color: #666;
 }

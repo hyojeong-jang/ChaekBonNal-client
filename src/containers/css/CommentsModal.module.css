@@ -43,7 +43,7 @@
   color: #333333;
   font-family: "Helvetica Neue",Arial,sans-serif;
   font-size: 13px;
-  width: 100%;
+  width: auto;
   height: auto;
   position: fixed;
 }
@@ -133,12 +133,17 @@
   top: 21%;
 }
 
-.bookmarks {
+.bookmarksBox {
   position: absolute;
+  z-index: 0;
   top: 16%;
-  left: 30%;
+  left: 53%;
 }
-
+.bookmarksBox:checked {
+  position: absolute;
+  top: 17%;
+  left: 53%;
+}
 .author {
   width: 100%;
   display: flex;
@@ -195,8 +200,10 @@
 
 .authorName {
   top: 19%;
-  position: absolute;
   right: 17%;
+  position: absolute;
+  font-family: "Helvetica Neue",Arial,sans-serif;
+  font-weight: 300;
 }
 
 .commentDetail {

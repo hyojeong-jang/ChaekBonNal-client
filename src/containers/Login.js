@@ -35,11 +35,13 @@ const Login = () => {
         <Link to='/'>
           <img src='/images/Logo.png' className={styles.logo} />
         </Link>
-        <div className={styles.p}>
-          A book that is shut is but a block
-        </div>
-        <div className={styles.p2}>
-          Thomas Fuller
+        <div className={styles.pContainer}>
+          <div className={styles.p}>
+            A book that is shut is but a block
+          </div>
+          <div className={styles.p2}>
+            Thomas Fuller
+          </div>
         </div>
         <GoogleLogin
           className={styles.login}
