@@ -43,7 +43,7 @@ const Writing = () => {
         dispatch(actions.editModeData(reportId));
         setEditMode(true);
 
-        const bookReport = await api.findOndBookReport(reportId);
+        const bookReport = await api.findOneBookReport(reportId);
 
         if (imageUrl) {
           return dispatch(actions.changedImageInEditMode(

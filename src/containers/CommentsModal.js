@@ -36,7 +36,7 @@ export default class CommentsModal extends Component {
   }
 
   _getBookReport = async () => {
-    const bookReport = await api.findOndBookReport(this.props.bookReportId);
+    const bookReport = await api.findOneBookReport(this.props.bookReportId);
 
     this.setState({
       bookReport: bookReport.bookReport,

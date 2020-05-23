@@ -44,51 +44,52 @@ export const receiveMemberBookReport = async (userToken) => {
 };
 
 export const receiveNonMemberBookReport = async () => {
-    const response = await api.get(`/non-member/book-reports`);
-    return response.data.bookReports;
+  const response = await api.get(`/non-member/book-reports`);
+  return response.data.bookReports;
 };
 
 export const saveBookImage = async (userToken, file) => {
-    const formData = new FormData();
-    formData.append('photo', file);
+  const formData = new FormData();
+  formData.append('photo', file);
 
-    const response = await api.post(`/users/${userToken}/writing/attaching-image`,
-        formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
+  const response = await api.post(`/users/${userToken}/writing/attaching-image`,
+    formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data'
+    }
+  });
 
-    return response.data.imageUrl;
+  return response.data.imageUrl;
 };
 
-export const findOndBookReport = async (id) => {
-    const response = await api.get(`/book-reports/${id}`);
-    return response.data;
+export const findOneBookReport = async (id) => {
+  const response = await api.get(`/book-reports/${id}`);
+
+  return response.data;
 };
 
 export const saveBookmark = async (userToken, reportId, isBookmarked) => {
-    const response = await api.put(`/book-reports/${reportId}/users/${userToken}/bookmark`, { isBookmarked });
+  const response = await api.put(`/book-reports/${reportId}/users/${userToken}/bookmark`, { isBookmarked });
 
-    return response.data.isBookmarked;
+  return response.data.isBookmarked;
 };
 
 export const saveComment = async (userToken, reportId, comment) => {
-    const response = await api.post(`/book-reports/${reportId}/users/${userToken}/comment`, {
-        data: {
-            comment
-        }
-    });
+  const response = await api.post(`/book-reports/${reportId}/users/${userToken}/comment`, {
+    data: {
+      comment
+    }
+  });
 
-    return response.data.comments;
+  return response.data.comments;
 };
 
 export const deleteComment = async (userToken, reportId, commentId) => {
-    const response = await api.delete(`/book-reports/${reportId}/users/${userToken}/comment`, {
-        data: {
-            commentId
-        }
-    })
+  const response = await api.delete(`/book-reports/${reportId}/users/${userToken}/comment`, {
+    data: {
+      commentId
+    }
+  })
 
-    return response.data.comments
+  return response.data.comments;
 };

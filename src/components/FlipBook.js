@@ -17,15 +17,14 @@ const FlipBook = ({ bookReport, setBookReportId, setIsModalOpened }) => {
         animationDuration='400'
       >
         { bookReport.map((page, index) => (
-            <BookReport
-              key={index}
-              page={page}
-              index={index}
-              setIsModalOpened={setIsModalOpened}
-              setBookReportId={setBookReportId}
-            />
-          ))
-        }
+          <BookReport
+            key={index}
+            page={page}
+            index={index}
+            setIsModalOpened={setIsModalOpened}
+            setBookReportId={setBookReportId}
+          />
+        ))}
       </FlipPage>
     </div>
   );
