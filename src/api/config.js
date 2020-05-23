@@ -1,7 +1,7 @@
 const axios = require('axios').default;
 
 const api = axios.create({
-  baseURL: 'http://Chaekbonnal-env.eba-kdn2qrf7.ap-northeast-2.elasticbeanstalk.com',
+  baseURL: process.env.REACT_APP_BASE_URL,
   timeout: 10000
 });
 
