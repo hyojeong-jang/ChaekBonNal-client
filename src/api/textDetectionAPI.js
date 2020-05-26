@@ -3,7 +3,7 @@ const axios = require('axios').default;
 const textDetectionAPI = async (base64encoding) => {
   const imageUrl = base64encoding.split(',')[1];
   try {
-    const response = await axios.post(`https://vision.googleapis.com/v1/images:annotate?key=AIzaSyAzoCe47blscqw-GpScS4ZhQCK26AAtHJ8`, {
+    const response = await axios.post(process.env.REACT_APP_GOOGLE_VISION_API, {
       requests: [
         {
           image: { content: imageUrl },
