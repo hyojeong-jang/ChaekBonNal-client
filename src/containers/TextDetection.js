@@ -18,13 +18,13 @@ const TextDetection = () => {
   const reportId = useSelector(state => state.bookReports.id);
 
   const [ text, setText ] = useState('');
-  const [ crop, setCrop ] = useState({
-    x: 10,
-    y: 10,
-    width: 80,
-    height: 80
-  });
-
+  // const [ crop, setCrop ] = useState({
+  //   x: 10,
+  //   y: 10,
+  //   width: 80,
+  //   height: 80
+  // });
+  const [crop, setCrop] = useState({ aspect: 16 / 9 });
   const onClickDetectionButton = useCallback(async () => {
     const detectedText = await textDetectionAPI(dataUrl);
     setText(detectedText);
@@ -40,16 +40,16 @@ const TextDetection = () => {
     }
   }, [reportId, text]);
 
-  const onCropChange = useCallback(crop => {
-    setCrop({ crop });
-  });
-
-  const onImageLoaded = useCallback(image => {
-    console.log('onCropComplete', image)
+  const onCropChange = useCallback(newCrop => {
+    setCrop(newCrop);
   });
 
   const onCropComplete = useCallback(crop => {
+    // const reader = new FileReader();
+    // reader.readAsDataURL(crop)
     console.log('onCropComplete', crop)
+    console.log(typeof crop)
+    // console.log('reader result!', reader.result)
   });
 
   return (
@@ -58,7 +58,6 @@ const TextDetection = () => {
         src={dataUrl}
         crop={crop}
         className={styles.image}
-        onImageLoaded={onImageLoaded}
         onComplete={onCropComplete}
         onChange={onCropChange}
       />

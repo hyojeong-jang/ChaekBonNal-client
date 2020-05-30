@@ -96,6 +96,11 @@ const Writing = () => {
     history.push('/');
   }, [editMode, draftsTitle, draftsText]);
 
+  const onCancelButtonClick = useCallback(() => {
+    dispatch(actions.clearDrafts());
+    history.push('/');
+  });
+
   return (
     <div className={styles.container}>
       <div className={styles.searchBar}>
@@ -149,11 +154,10 @@ const Writing = () => {
         className={styles.doneButton}
         onClick={onDoneButtonClick}
       >게시하기</button>
-      <Link to='/'>
-        <button
-          className={styles.cancelButton}
-        > 취소</button>
-      </Link>
+      <button
+        className={styles.cancelButton}
+        onClick={onCancelButtonClick}
+      > 취소</button>
     </div>
   );
 };

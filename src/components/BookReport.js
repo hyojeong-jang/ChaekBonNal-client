@@ -25,7 +25,7 @@ const BookReport = ({ page, index, setIsModalOpened, setBookReportId }) => {
           </div>
           <div className={styles.bookDetail}>
             <span>Title</span>
-            <a href={page.book_info.link}>
+            <a href={page.book_info.link} target='_blank'>
               {page.book_info.title.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
             </a>
             <span>Author</span>

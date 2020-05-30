@@ -26,10 +26,11 @@ export const receiveImageData = (url) => ({
   url
 });
 
-export const drafts = (text, title) => ({
+export const drafts = (text, title, quote) => ({
   type: types.DRAFTS,
   text,
-  title
+  title,
+  quote
 });
 
 export const clearDrafts = () => ({

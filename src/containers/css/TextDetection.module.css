@@ -54,6 +54,7 @@ body {
   color: #66757f;
   background-color: white;
   cursor: pointer;
+  outline: none;
 }
 
 .detectButton:hover, .useQuote:hover {

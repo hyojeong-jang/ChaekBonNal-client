@@ -4,9 +4,9 @@ import { book } from './book';
 import { bookReports } from './bookReports';
 
 const reducer = combineReducers({
-    user,
-    book,
-    bookReports
+  user,
+  book,
+  bookReports
 });
 
 export default reducer

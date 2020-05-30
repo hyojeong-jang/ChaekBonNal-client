@@ -15,7 +15,7 @@ export default class CommentsModal extends Component {
       bookReport: null,
       comment: '',
       userName: '',
-      defaultChecked: '',
+      // defaultChecked: '',
       isBookmarked: false,
       userToken: localStorage.token,
     };
@@ -53,10 +53,10 @@ export default class CommentsModal extends Component {
       this.setState({ userName: userData.name });
 
       if (isUserBookmarked) {
-        this.setState({ defaultChecked: 'checked' });
+        // this.setState({ defaultChecked: 'checked' });
         this.setState({ isBookmarked: true });
       } else {
-        this.setState({ defaultChecked: '' });
+        // this.setState({ defaultChecked: '' });
         this.setState({ isBookmarked: false });
       }
     }
@@ -64,7 +64,11 @@ export default class CommentsModal extends Component {
 
   _onCloseButtonClick = async () => {
     if (this.state.userToken) {
-      await api.saveBookmark(this.state.userToken, this.props.bookReportId, this.state.isBookmarked);
+      await api.saveBookmark(
+        this.state.userToken,
+        this.props.bookReportId,
+        this.state.isBookmarked
+      );
     }
     this.props.setModal(false);
   }
@@ -75,76 +79,116 @@ export default class CommentsModal extends Component {
 
   _onAddCommentButtonClick = async () => {
     if (this.state.userToken) {
-      const savedComment = await api.saveComment(this.state.userToken, this.props.bookReportId, this.state.comment);
+      const savedComment = await api.saveComment(
+        this.state.userToken,
+        this.props.bookReportId,
+        this.state.comment
+      );
 
       this.setState({ comments: savedComment });
+      this.setState({ comment: '' });
     } else {
       alert('로그인하시면 댓글을 남길 수 있어요!');
     }
   }
 
   _onDeleteButtonClick = async (e) => {
-    const withoutDeletedComment = await api.deleteComment(this.state.userToken, this.props.bookReportId, e.target.name);
+    const withoutDeletedComment = await api.deleteComment(
+      this.state.userToken,
+      this.props.bookReportId,
+      e.target.name
+    );
     this.setState({ comments: withoutDeletedComment })
   }
 
   _onDeleteReportButtonClick = async () => {
-    await deleteBookReport(this.state.userToken, this.props.bookReportId);
+    await deleteBookReport(
+      this.state.userToken,
+      this.props.bookReportId
+    );
     window.location.reload();
   }
-
   render() {
     const {
       author,
       userName,
+      comment,
       comments,
       bookReport,
-      defaultChecked,
+      // defaultChecked,
+      isBookmarked
     } = this.state;
 
     return (
       <div className={styles.outerContainer}>
-        <div className={styles.innerReport}>
-          {
-            bookReport
-            && <>
-              <input
-                className={styles.bookmarksBox}
-                type='checkbox'
-                onChange={this._bookmark}
-                defaultChecked={defaultChecked}
-              />
-              { author.name === userName
-                && <>
-                  <Link to={`/writing?id=${bookReport._id}`}>
-                    <button className={styles.editButton}>Edit</button>
-                  </Link>
+        {
+          bookReport
+          && <div className={styles.innerReport}>
+            {/* <input
+              className={styles.bookmarksBox}
+              id='bookmark'
+              type='checkbox'
+              onChange={this._bookmark}
+              defaultChecked={defaultChecked}
+            /> */}
+            <div className={styles.header}>
+              {
+                isBookmarked
+                && <div
+                  className={styles.bookmarkRibon}
+                  onClick={this._bookmark}
+                >
+                  <img src='/images/bookmark_fill.png' />
+                </div>
+              }
+              {
+                !isBookmarked
+                && <div
+                  className={styles.bookmarkRibon}
+                  onClick={this._bookmark}
+                >
+                  <img src='/images/bookmark_empty.png' />
+                </div>
+              }
+              <div>
+                <div className={styles.title}>
+                  {bookReport.title}
+                </div>
+                <div className={styles.bookInfo}>
+                  {bookReport.book_info.title.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}&ensp;-&ensp;
+                  {bookReport.book_info.author.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
+                </div>
+              </div>
+              {
+                author.name === userName
+                ? <div className={styles.buttonContainer}>
+                  <div className={styles.editButton}>
+                    <Link to={`/writing?id=${bookReport._id}`}>
+                      <span className={styles.editText}>Edit</span>
+                    </Link>
+                  </div>
                   <input
                     type='button'
                     value='Delete'
                     className={styles.deleteButton}
                     onClick={this._onDeleteReportButtonClick}
                   />
-                </>
+                </div>
+                : <div className={styles.emptyContainer}></div>
               }
-              <div className={styles.bookInfo}>
-                {bookReport.book_info.title.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}&ensp;-&ensp;
-                {bookReport.book_info.author.replace(/<b>/gi, '').replace(/<\/b>/gi, '')}
-              </div>
-              <div className={styles.title}>{bookReport.title}</div>
-              <div className={styles.imageContainer}>
-                <img className={styles.image} src={bookReport.image_url}/>
-                <p>
-                  <img className={styles.icon} src='/images/quoteIcon.png' />
-                  {bookReport.quote}
-                </p>
-              </div>
-              <div className={styles.text}>
-                {bookReport.text}
-              </div>
-            </>
+            </div>
+            <div className={styles.imageContainer}>
+              <img className={styles.image} src={bookReport.image_url}/>
+              <p>
+                <img className={styles.icon} src='/images/quoteIcon.png' />
+                {bookReport.quote}
+              </p>
+            </div>
+            <div className={styles.text}>
+              {bookReport.text}
+            </div>
+          </div>
           }
-        </div>
         <div className={styles.commentsContainer}>
           {
             author
@@ -184,7 +228,11 @@ export default class CommentsModal extends Component {
             >X</button>
           </div>
           <div className={styles.writeComment}>
-            <textarea className={styles.commentInput} onChange={this._writeComment}></textarea>
+            <textarea
+              className={styles.commentInput}
+              onChange={this._writeComment}
+              value={comment}
+            ></textarea>
             <button onClick={this._onAddCommentButtonClick}>게시</button>
           </div>
         </div>

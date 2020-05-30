@@ -14,6 +14,7 @@ const textDetectionAPI = async (base64encoding) => {
 
     return response.data.responses[0].fullTextAnnotation.text;
   } catch (error) {
+    console.log('google vision error ', error)
     alert('텍스트를 감지할 수 없는 이미지입니다.')
   }
 };

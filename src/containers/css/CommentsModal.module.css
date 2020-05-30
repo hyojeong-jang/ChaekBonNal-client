@@ -37,7 +37,6 @@
 }
 
 .bookInfo {
-  padding-top: 1rem;
   padding-left: 1rem;
   flex-direction: row;
   color: #333333;
@@ -45,23 +44,18 @@
   font-size: 13px;
   width: auto;
   height: auto;
-  position: fixed;
 }
 
 .title {
   font-weight: 600;
   font-size: 18px;
-}
-
-.title {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   color: #2e2e2e;
   font-family: "Helvetica Neue",Arial,sans-serif;
-  width: 100%;
-  margin-top: 5%;
-  border-bottom: #d6d3d3 solid 1px;
+  width: auto;
+  text-align: center;
 }
 
 .imageContainer {
@@ -99,6 +93,7 @@
   top: 15.5%;
   right: 15%;
   border: none;
+  outline: none;
 }
 
 .text {
@@ -114,47 +109,43 @@
   overflow: auto;
 }
 
+.editText {
+  font-size: 13px;
+  color: gray;
+  font-weight: 600;
+}
+
 .editButton, .deleteButton {
-  position: absolute;
   font-size: 13px;
   background: none;
   cursor:pointer;
   border: none;
   color: gray;
+  text-align: end;
+  align-self: flex-end;
+  margin-left: 10px;
 }
 
-.editButton {
-  left: 48.5%;
-  top: 21%;
-}
-
-.deleteButton {
-  left: 51%;
-  top: 21%;
+.buttonContainer {
+  display: flex;
+  flex-direction: row;
 }
 
 .bookmarksBox {
-  position: absolute;
-  z-index: 0;
-  top: 16%;
-  left: 53%;
+  display: none;
 }
-.bookmarksBox:checked {
-  position: absolute;
-  top: 17%;
-  left: 53%;
-}
+
 .author {
-  width: 100%;
   display: flex;
-  padding-top: 0.5rem;
+  flex-direction: row;
   padding-bottom: 0.5rem;
   padding-left: 1rem;
   color: #2e2e2e;
   font-family: "Helvetica Neue",Arial,sans-serif;
-  width: 100%;
-  margin-top: 57px;
+  width: auto;
+  margin-top: 3rem;
   border-bottom: #d6d3d3 solid 1px;
+  justify-content: flex-end;
 }
 
 .writeComment {
@@ -193,17 +184,13 @@
 .author > img {
   width: 20px;
   height: 20px;
-  position: absolute;
-  top: 19%;
-  right: 24%;
 }
 
 .authorName {
-  top: 19%;
-  right: 17%;
-  position: absolute;
   font-family: "Helvetica Neue",Arial,sans-serif;
   font-weight: 300;
+  margin-right: 20px;
+  margin-left: 10px;
 }
 
 .commentDetail {
@@ -225,5 +212,22 @@
   cursor:pointer;
   border: none;
   color: gray;
-};
+}
 
+.bookmarkRibon {
+  display: inline-block;
+  width: 40px;
+  height: 70px;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  border-bottom: #d6d3d3 solid 1px;
+  padding-top: 0.5rem;
+  justify-content: space-between;
+}
+
+.emptyContainer {
+  width: 10%;
+}
