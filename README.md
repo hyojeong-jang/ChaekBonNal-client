@@ -29,15 +29,7 @@
 로컬환경에서 실행하기 위해서 아래 절차가 필요합니다.
 
 ### Client
-.env 파일을 루트 디렉토리에 생성하고, 환경변수를 설정해주세요. ( <your_~>를 지우고 발급받은 정보들을 입력해주세요.)
-
-- [Google Cloud Platform](https://console.cloud.google.com/?hl=ko)
-  1. Google 로그인
-  2. API 및 서비스 - 대시보드 - API 및 서비스 사용 설정
-  3. "Cloud Vision API" 선택 - 사용 설정
-  4. API 및 서비스 - 사용자 인증 정보 - 사용자 인증 정보 만들기 - OAuth 2.0 클라이언트 ID (<your_client_id>에 해당)
-  5. API 및 서비스 - 사용자 인증 정보 - 사용자 인증 정보 만들기 - API키 (<your_api_key>에 해당)
-
+- .env 파일을 루트 디렉토리에 생성하고, 환경변수를 설정해주세요. ( <your_~>를 지우고 발급받은 정보들을 입력해주세요.)
 ```
 
 REACT_APP_BASE_URL=http://localhost:8080
@@ -47,27 +39,16 @@ REACT_APP_GOOGLE_VISION_API=https://vision.googleapis.com/v1/images:annotate?key
 
 ```
 
+- [Google Cloud Platform](https://console.cloud.google.com/?hl=ko)
+  1. Google 로그인
+  2. API 및 서비스 - 대시보드 - API 및 서비스 사용 설정
+  3. "Cloud Vision API" 선택 - 사용 설정
+  4. API 및 서비스 - 사용자 인증 정보 - 사용자 인증 정보 만들기 - OAuth 2.0 클라이언트 ID (<your_client_id>에 해당)
+  5. API 및 서비스 - 사용자 인증 정보 - 사용자 인증 정보 만들기 - API키 (<your_api_key>에 해당)
+
+
 ### Server
-.env 파일을 루트 디렉토리에 생성하고, 환경변수를 설정해주세요. ( <your_~>를 지우고 발급받은 정보들을 입력해주세요.)
-
-- [MongoDB ](https://www.mongodb.com)
-  1. MongoDB Atlas 로그인 및 접속
-  2. Connect your application - your connection string
- 
-- [Naver Developers 검색 API 이용 신청](https://developers.naver.com/apps/#/register)
-  1. 네이버 로그인 및 애플리케이션 등록
-  2. 사용 API "검색"으로 등록
-  3. 내 애플리케이션 - 애플리케이션 정보
-
-- [국립중앙도서관 Open API 인증키 신청](https://nl.go.kr/NL/contents/N31101010000.do)
-  1. 국립중앙도서관 로그인 및 Open API 인증키 신청하기
-  2. 인증키 신청/관리 - 발급된 인증키 정보	
-  
-- [AWS S3 액세스 키 발급](https://aws.amazon.com/ko/s3)
-  1. AWS 로그인
-  2. 내 보안 자격증명 - 액세스 키(액세스 키 ID 및 비밀 액세스 키)
-  3. 새 엑세스 키 만들기
-
+- .env 파일을 루트 디렉토리에 생성하고, 환경변수를 설정해주세요. ( <your_~>를 지우고 발급받은 정보들을 입력해주세요.)
 ```
 
 PORT=8080
@@ -87,6 +68,25 @@ AWS_SECRET_ACCESS_KEY=<your_secret_key>
 AWS_REGION=<your_region>
 
 ```
+
+- [MongoDB ](https://www.mongodb.com)
+  1. MongoDB Atlas 로그인 및 접속
+  2. Connect your application - your connection string
+ 
+- [Naver Developers 검색 API 이용 신청](https://developers.naver.com/apps/#/register)
+  1. 네이버 로그인 및 애플리케이션 등록
+  2. 사용 API "검색"으로 등록
+  3. 내 애플리케이션 - 애플리케이션 정보
+
+- [국립중앙도서관 Open API 인증키 신청](https://nl.go.kr/NL/contents/N31101010000.do)
+  1. 국립중앙도서관 로그인 및 Open API 인증키 신청하기
+  2. 인증키 신청/관리 - 발급된 인증키 정보	
+  
+- [AWS S3 액세스 키 발급](https://aws.amazon.com/ko/s3)
+  1. AWS 로그인
+  2. 내 보안 자격증명 - 액세스 키(액세스 키 ID 및 비밀 액세스 키)
+  3. 새 엑세스 키 만들기
+
 
 <a name='installation'></a>
 ## Installation
@@ -152,16 +152,16 @@ $ npm start
 
 <a name='challenges'></a>
 ## Challenges
-- 독후감 수정 시 불필요한 서버 요청
-수정하는 과정에서 여러 번의 페이지 라우팅이 일어났습니다.
-(e.g. 책 정보를 바꾸기 위해 책 검색 페이지로 이동, 사진 변경을 위해 이미지 첨부 페이지로 이동 등)
-라우팅이 일어날 때마다 서버로 요청되어 속도와 비용 문제가 우려되었고 개선하기 위하여 라우팅될 때 여러가지 모드를 만들었습니다.
+- 독후감 수정 시 불필요한 서버 요청<br/>
+수정하는 과정에서 여러 번의 페이지 라우팅이 일어났습니다.<br/>
+(e.g. 책 정보를 바꾸기 위해 책 검색 페이지로 이동, 사진 변경을 위해 이미지 첨부 페이지로 이동 등)<br/>
+라우팅이 일어날 때마다 서버로 요청되어 속도와 비용 문제가 우려되었고 개선하기 위하여 라우팅될 때 여러가지 모드를 만들었습니다.<br/>
 수정모드에서 초기 한 번만 서버 요청을 하였고 이후 라우팅을 할 때는 changedImageInEditMode와 같은 액션을 사용하여 State로 데이터를 관리하였습니다.
 
-- Portal의 사용
-어플리케이션 특성 상 같은 포맷의 모달이 다양한 경로에서 재 사용되어야하고, 시각적으로 pop-up되어야 했습니다.
-react portal은 DOM 트리 구조 어디에서나 있을 수 있지만 일반적인 react 자식 컴포넌트와 같이 이벤트가 버블링된다는 특성 때문에 사용하였습니다.
-따라서 시각적으로 상속성이 없고, 어느 경로에서나 pop-up되어 보여지고, 또한 이벤트 버블링이 되는 portal을 이용해 원하는 모달을 만들 수 있었습니다.
+- Portal의 사용<br/>
+어플리케이션 특성 상 같은 포맷의 모달이 다양한 경로에서 재 사용되어야하고, 시각적으로 pop-up되어야 했습니다.<br/>
+react portal은 DOM 트리 구조 어디에서나 있을 수 있고 일반적인 자식 컴포넌트와 같이 이벤트가 버블링된다는 특성 때문에 사용하게 되었습니다.<br/>
+따라서 시각적으로 상속성이 없고, 어느 경로에서나 pop-up되어 보여지고, 또한 이벤트 버블링이 되는 원하는 모달을 만들 수 있었습니다.<br/>
 간단한 케이스로 사용해보았지만 포탈의 장점을 체험할 수 있었습니다.
 
 <a name='deployment'></a>
